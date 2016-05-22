@@ -1,0 +1,21 @@
+version: '2'
+services:
+  api:
+    links:
+      - db:booking-database
+    image: booking-api
+  app:
+    links:
+      - api:booking-api
+      - db:booking-database
+    image: booking-app
+  db:
+    image: booking-database
+  web:
+    container_name: booking-web
+    links:
+      - api:booking-api
+      - app:booking-app
+    image: booking-web
+    ports:
+      - "80:80"
