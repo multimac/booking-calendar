@@ -6,12 +6,6 @@ services:
       - "4590"
     volumes:
       - ./api/:/dotnet/
-  app:
-    build: ./app/
-    ports:
-      - "4591"
-    volumes:
-      - ./app/:/dotnet/
   db:
     build: ./database/
     ports:
