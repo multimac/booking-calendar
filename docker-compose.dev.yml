@@ -12,3 +12,6 @@ services:
       - "5432:5432"
   web:
     build: ./web/
+    volumes:
+      - ./web/static/:/data/web/static/
+      - ./web/www/:/data/web/www/
