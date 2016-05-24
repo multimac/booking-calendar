@@ -7,7 +7,6 @@ services:
   db:
     image: booking-database
   web:
-    container_name: booking-web
     links:
       - api:booking-api
     image: booking-web
