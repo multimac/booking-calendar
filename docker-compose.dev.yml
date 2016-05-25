@@ -1,11 +1,13 @@
 version: '2'
 services:
   api:
-    build: ./api/
+    build:
+      context: ./dotnet/
+      dockerfile: Booking.Api.Dockerfile
     ports:
       - "4590"
     volumes:
-      - ./api/:/dotnet/
+      - ./dotnet/:/dotnet/
   db:
     build: ./database/
     ports:

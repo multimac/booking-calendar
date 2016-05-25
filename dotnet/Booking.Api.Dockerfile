@@ -1,8 +1,8 @@
 FROM microsoft/dotnet:latest
+COPY ./ /dotnet/
 
-COPY . /dotnet/
-WORKDIR /dotnet/
-RUN dotnet restore --verbosity Warning 
+WORKDIR /dotnet/src/Booking.Api/
+RUN dotnet restore --verbosity Warning
 
 EXPOSE 4590
 VOLUME /dotnet/
