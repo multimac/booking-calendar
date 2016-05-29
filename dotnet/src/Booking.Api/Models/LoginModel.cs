@@ -1,13 +1,22 @@
+using Booking.Common.Extensions;
 using FluentValidation;
 
 namespace Booking.Api
 {
-    public class LoginModel
+    public class LoginModel : IModel
     {
-        public string Email { get; set; } = null;
-        public string Password { get; set; } = null;
+        public string Email { get; set; }
+        public string Password { get; set; }
         
-        public bool? RememberMe { get; set; } = false;
+        public bool? RememberMe { get; set; }
+
+        public void Normalize()
+        {
+            Email = Email.NullIfWhiteSpace();
+            Password = Password.NullIfWhiteSpace();
+            
+            RememberMe = RememberMe ?? false;
+        }
     }
     public class LoginModelValidator : AbstractValidator<LoginModel>
     {

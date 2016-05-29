@@ -1,3 +1,5 @@
+using Booking.Common.Extensions;
+
 namespace Booking.Api
 {
     public enum ErrorCode
@@ -14,14 +16,14 @@ namespace Booking.Api
         TwoFactorRequired,
     }
     
-    public class ErrorModel
+    public class ErrorModel : IModel
     {
-        public ErrorCode Code { get; set; } = ErrorCode.Unknown;
-        public string Reason { get; set; } = null;
+        public ErrorCode? Code { get; set; }
+        public string Reason { get; set; }
         
-        public string Message { get; set; } = null;
+        public string Message { get; set; }
         
-        public ErrorModel[] InnerErrors { get; set; } = null;
+        public ErrorModel[] InnerErrors { get; set; }
         
         public ErrorModel() { }
         public ErrorModel(ErrorCode code)
@@ -36,6 +38,16 @@ namespace Booking.Api
         public ErrorModel(ErrorCode code, string message, ErrorModel[] innerErrors) : this(code, message)
         {
             this.InnerErrors = innerErrors;
+        }
+        
+        public void Normalize()
+        {
+            Code = Code ?? ErrorCode.Unknown;
+            Reason = Reason.NullIfWhiteSpace();
+            
+            Message = Message.NullIfWhiteSpace();
+            
+            InnerErrors = (InnerErrors.Length == 0 ? null : InnerErrors);
         }
     }
 }
