@@ -3563,6 +3563,13 @@
           "Microsoft.NETCore.App": "1.0.0-rc2-3002702"
         }
       },
+      "Booking.Common/0.1.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v1.0",
+        "dependencies": {
+          "Microsoft.NETCore.App": "1.0.0-rc2-3002702"
+        }
+      },
       "Booking.Data/0.1.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
@@ -9503,6 +9510,10 @@
       "type": "project",
       "path": "../Booking.Business/project.json"
     },
+    "Booking.Common/0.1.0": {
+      "type": "project",
+      "path": "../Booking.Common/project.json"
+    },
     "Booking.Data/0.1.0": {
       "type": "project",
       "path": "../Booking.Data/project.json"
@@ -9511,6 +9522,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Booking.Business >= 0.1.0-*",
+      "Booking.Common >= 0.1.0-*",
       "Booking.Data >= 0.1.0-*",
       "FluentValidation >= 6.3.3-alpha",
       "Microsoft.AspNetCore.Diagnostics >= 1.0.0-rc2-final",
