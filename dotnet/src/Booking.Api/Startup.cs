@@ -1,15 +1,18 @@
+using System.Globalization;
+using System.Linq;
+using Booking.Business.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
+using Microsoft.Extensions.Logging;
 
 namespace Booking.Api
 {
     public class Startup
     {
-        private IConfigurationRoot Configuration { get; set; } = null;
+        private IConfigurationRoot Configuration { get; } = null;
         
         public Startup(IHostingEnvironment env)
         {
@@ -24,37 +27,52 @@ namespace Booking.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
+            // Set up and configure Identity
+            services.AddIdentity<User, Role>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                
+                options.User.RequireUniqueEmail = true;
+            });
             
+            // Set up and configure Localization
+            services.AddLocalization(
+                options => { options.ResourcesPath = Configuration["Localization:ResourcePath"]; }
+            );
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var defaultCulture = Configuration["Localization:DefaultCulture"];
+                
+                var supportedCulturesConfig = Configuration.GetSection("Localization:SupportedCultures");
+                var supportedCultures = supportedCulturesConfig.GetChildren()
+                    .Select(child => new CultureInfo(child.ToString()))
+                    .ToArray();
+                
+                options.DefaultRequestCulture = new RequestCulture(
+                    culture: defaultCulture, uiCulture: defaultCulture
+                );
+                
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+            
+            // Set up and configure MVC
+            services.AddMvc();
         }
         
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
         {
-            app.Run(async (context) => 
+            logger.AddConsole(Configuration.GetSection("Logging"));
+            
+            if(env.IsDevelopment())
             {
-                try
-                {
-                    var defaultConn = Configuration["ConnectionStrings:Default"];
-                    await context.Response.WriteAsync(defaultConn + '\n');
-                    
-                    var conn = new NpgsqlConnection();
-                    conn.ConnectionString = defaultConn;
-                    
-                    conn.Open();
-                    
-                    var commText = Configuration["Data:Command"];
-                    await context.Response.WriteAsync(commText + '\n');
-                    
-                    var comm = conn.CreateCommand();
-                    comm.CommandText = commText;
-                    
-                    var result = comm.ExecuteScalar();
-                    await context.Response.WriteAsync(result.ToString());
-                }
-                catch (System.Exception ex)
-                {
-                    await context.Response.WriteAsync(ex.ToString());
-                }
-            });
+                app.UseDeveloperExceptionPage();
+            }
+            
+            app.UseIdentity();
+            
+            app.UseMvc();
         }
     }
 }
