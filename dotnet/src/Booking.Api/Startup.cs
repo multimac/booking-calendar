@@ -63,6 +63,8 @@ namespace Booking.Api
             // Set up custom dependencies for injection
             services.AddScoped<IRoleStore<Role>, RoleStore>();
             services.AddScoped<IUserStore<User>, UserStore>();
+            
+            services.AddScoped<ResponseFactory>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
