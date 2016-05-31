@@ -1,7 +1,7 @@
 using Booking.Common.Extensions;
 using FluentValidation;
 
-namespace Booking.Api
+namespace Booking.Api.Models
 {
     public class LoginModel : IModel
     {

@@ -1,4 +1,4 @@
-namespace Booking.Api
+namespace Booking.Api.Models
 {
     public interface IModel
     {

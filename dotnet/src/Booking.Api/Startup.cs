@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Linq;
+using Booking.Api.General;
+using Booking.Api.Identity;
 using Booking.Business.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Booking.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-namespace Booking.Api
+namespace Booking.Api.General
 {
     public class ResponseFactory
     {

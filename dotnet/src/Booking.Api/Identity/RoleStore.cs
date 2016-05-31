@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Booking.Business.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace Booking.Api
+namespace Booking.Api.Identity
 {
     public class RoleStore : IRoleStore<Role>
     {
