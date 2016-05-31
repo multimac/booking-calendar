@@ -66,7 +66,7 @@ namespace Booking.Api
             services.AddScoped<IRoleStore<Role>, RoleStore>();
             services.AddScoped<IUserStore<User>, UserStore>();
             
-            services.AddScoped<ResponseFactory>();
+            services.AddScoped<ErrorResponseFactory>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
