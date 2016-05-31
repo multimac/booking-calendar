@@ -3,6 +3,7 @@ using System.Linq;
 using Booking.Business.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,6 +59,10 @@ namespace Booking.Api
             
             // Set up and configure MVC
             services.AddMvc();
+            
+            // Set up custom dependencies for injection
+            services.AddScoped<IRoleStore<Role>, RoleStore>();
+            services.AddScoped<IUserStore<User>, UserStore>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
