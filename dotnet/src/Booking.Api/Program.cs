@@ -15,7 +15,6 @@ namespace Booking.Api
             var config = new ConfigurationBuilder()
                 .SetBasePath(currentDir)
                 .AddJsonFile(HostingJsonFile)
-                .AddEnvironmentVariables()
                 .AddCommandLine(args)
                 .Build();
                 
