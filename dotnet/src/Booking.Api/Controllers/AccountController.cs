@@ -53,7 +53,7 @@ namespace Booking.Api.Controllers
             if(user == null)
             {
                 var error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
-                return new JsonResult(error) { StatusCode = 401 };
+                return new ObjectResult(error) { StatusCode = 401 };
             }
             
             var signInResult = await SignInManager.PasswordSignInAsync(
@@ -69,17 +69,17 @@ namespace Booking.Api.Controllers
                 else
                     error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
                     
-                return new JsonResult(error) { StatusCode = 401 };
+                return new ObjectResult(error) { StatusCode = 401 };
             }
             
-            return new JsonResult(null) { StatusCode = 200 };
+            return new StatusCodeResult(200);
         }
         
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await SignInManager.SignOutAsync();
-            return new JsonResult(null) { StatusCode = 200 };
+            return new StatusCodeResult(200);
         }
     }
 }

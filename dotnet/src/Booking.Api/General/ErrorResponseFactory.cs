@@ -42,7 +42,7 @@ namespace Booking.Api.General
                     .ToArray()
             );
             
-            return new JsonResult(model) { StatusCode = 400 };
+            return new ObjectResult(model) { StatusCode = 400 };
         }
         public IActionResult ValidationFailed(IList<FluentValidation.Results.ValidationFailure> errors)
         {
@@ -50,8 +50,8 @@ namespace Booking.Api.General
                 errors.Select(err => new ErrorModel(ErrorCode.ValidationError, err.ToString()))
                     .ToArray()
             );
-            
-            return new JsonResult(model) { StatusCode = 400 };
+
+            return new ObjectResult(model) { StatusCode = 400 };
         }
     }
 }
