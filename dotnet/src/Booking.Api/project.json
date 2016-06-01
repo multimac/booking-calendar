@@ -19,6 +19,7 @@
     
     "Microsoft.AspNetCore.Diagnostics": "1.0.0-*",
     "Microsoft.AspNetCore.Identity": "1.0.0-*",
+    "Microsoft.AspNetCore.Localization": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-*",
     
     
