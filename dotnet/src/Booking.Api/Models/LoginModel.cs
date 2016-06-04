@@ -5,10 +5,10 @@ namespace Booking.Api.Models
 {
     public class LoginModel : IModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Email { get; set; } = null;
+        public string Password { get; set; } = null;
         
-        public bool? RememberMe { get; set; }
+        public bool? RememberMe { get; set; } = null;
 
         public void Normalize()
         {

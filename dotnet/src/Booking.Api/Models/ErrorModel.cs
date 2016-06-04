@@ -6,6 +6,7 @@ namespace Booking.Api.Models
     {
         /* 0 - 29: System errors */
         Unknown = 0,
+        InternalServerError,
         
         /* 30 - 49: Request errors */
         ParseError = 30,
@@ -18,12 +19,12 @@ namespace Booking.Api.Models
     
     public class ErrorModel : IModel
     {
-        public ErrorCode? Code { get; set; }
-        public string Reason { get; set; }
+        public ErrorCode? Code { get; set; } = ErrorCode.Unknown;
+        public string Reason { get; set; } = null;
         
-        public string Message { get; set; }
+        public string Message { get; set; } = null;
         
-        public ErrorModel[] InnerErrors { get; set; }
+        public ErrorModel[] InnerErrors { get; set; } = null;
         
         public ErrorModel() { }
         public ErrorModel(ErrorCode code)
