@@ -41,6 +41,17 @@ namespace Booking.Common.Extensions
                 elements[swapIndex] = elements[i];
             }
         }
+        public static IEnumerable<T> Traverse<T>(this T source, Func<T, IEnumerable<T>> childSelector)
+        {
+            yield return source;
+            
+            var children = childSelector(source);
+            if(children == null)
+                yield break;
+            
+            foreach (var child in children.Traverse(childSelector))
+                yield return child;
+        }
         public static IEnumerable<T> Traverse<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> childSelector)
         {
             foreach (var item in source)
@@ -54,6 +65,10 @@ namespace Booking.Common.Extensions
                 foreach (var child in children.Traverse(childSelector))
                     yield return child;
             }
+        }
+        public static IEnumerable<T> Yield<T>(this T source)
+        {
+            yield return source;
         }
     }
 }
