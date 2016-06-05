@@ -1692,6 +1692,55 @@
           }
         }
       },
+      "Serilog/2.0.0-rc-600": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-rc2-24027",
+          "System.Collections": "4.0.11-rc2-24027",
+          "System.Dynamic.Runtime": "4.0.11-rc2-24027",
+          "System.Globalization": "4.0.11-rc2-24027",
+          "System.Linq": "4.1.0-rc2-24027",
+          "System.Reflection": "4.1.0-rc2-24027",
+          "System.Reflection.Extensions": "4.0.1-rc2-24027",
+          "System.Runtime": "4.1.0-rc2-24027",
+          "System.Runtime.Extensions": "4.1.0-rc2-24027",
+          "System.Text.RegularExpressions": "4.0.12-rc2-24027",
+          "System.Threading": "4.0.11-rc2-24027"
+        },
+        "compile": {
+          "lib/netstandard1.3/Serilog.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Serilog.dll": {}
+        }
+      },
+      "Serilog.Extensions.Logging/1.0.0-rc2-10110": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc2-final",
+          "Serilog": "2.0.0-rc-576",
+          "System.Threading": "4.0.11-rc2-24027"
+        },
+        "compile": {
+          "lib/netstandard1.3/Serilog.Extensions.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/Serilog.Extensions.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.ColoredConsole/2.0.0-beta-700": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "2.0.0-beta-505",
+          "System.Console": "4.0.0-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.1/Serilog.Sinks.ColoredConsole.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.1/Serilog.Sinks.ColoredConsole.dll": {}
+        }
+      },
       "System.AppContext/4.1.0-rc2-24027": {
         "type": "package",
         "dependencies": {
@@ -4977,6 +5026,44 @@
         "runtime.win7-x86.runtime.native.System.Data.SqlClient.sni.4.0.1-rc2-24027.nupkg.sha512",
         "runtime.win7-x86.runtime.native.System.Data.SqlClient.sni.nuspec",
         "runtimes/win7-x86/native/sni.dll"
+      ]
+    },
+    "Serilog/2.0.0-rc-600": {
+      "sha512": "HHpxkR5v1v1y9+6AjkX21XWxrIbxl7c42Boj6v+qY9AzMiBLHA9Ln8b31OekuRSA//VJc21h4Z08gMluTiqXFQ==",
+      "type": "package",
+      "files": [
+        "Serilog.2.0.0-rc-600.nupkg.sha512",
+        "Serilog.nuspec",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.xml",
+        "lib/netstandard1.0/Serilog.dll",
+        "lib/netstandard1.0/Serilog.xml",
+        "lib/netstandard1.3/Serilog.dll",
+        "lib/netstandard1.3/Serilog.xml"
+      ]
+    },
+    "Serilog.Extensions.Logging/1.0.0-rc2-10110": {
+      "sha512": "IjKgWASewcq+ZDEzQCpMHxNN2QRw4KyY/olXtehGL2uPqdkpZ5NP/f2EoWneEAwXIDXaxGWH2ukhi+LQ2nrr5w==",
+      "type": "package",
+      "files": [
+        "Serilog.Extensions.Logging.1.0.0-rc2-10110.nupkg.sha512",
+        "Serilog.Extensions.Logging.nuspec",
+        "lib/net45/Serilog.Extensions.Logging.dll",
+        "lib/net45/Serilog.Extensions.Logging.xml",
+        "lib/netstandard1.3/Serilog.Extensions.Logging.dll",
+        "lib/netstandard1.3/Serilog.Extensions.Logging.xml"
+      ]
+    },
+    "Serilog.Sinks.ColoredConsole/2.0.0-beta-700": {
+      "sha512": "GhVyZtqWpcc9hL4mIrTj6yDFadx+yQC4+Am4Ismx055yDu48U5YeYipI7jpvzWmTeN1aiSDih2VJXF5fjsUHkw==",
+      "type": "package",
+      "files": [
+        "Serilog.Sinks.ColoredConsole.2.0.0-beta-700.nupkg.sha512",
+        "Serilog.Sinks.ColoredConsole.nuspec",
+        "lib/dotnet5.1/Serilog.Sinks.ColoredConsole.dll",
+        "lib/dotnet5.1/Serilog.Sinks.ColoredConsole.xml",
+        "lib/net45/Serilog.Sinks.ColoredConsole.dll",
+        "lib/net45/Serilog.Sinks.ColoredConsole.xml"
       ]
     },
     "System.AppContext/4.1.0-rc2-24027": {
@@ -9539,7 +9626,10 @@
       "Microsoft.Extensions.Logging.Console >= 1.0.0-*",
       "Microsoft.Extensions.Options >= 1.0.0-*",
       "Microsoft.Extensions.Options.ConfigurationExtensions >= 1.0.0-*",
-      "Microsoft.NETCore.App >= 1.0.0-rc2-3002702"
+      "Microsoft.NETCore.App >= 1.0.0-rc2-3002702",
+      "Serilog >= 2.0.0-*",
+      "Serilog.Extensions.Logging >= 1.0.0-*",
+      "Serilog.Sinks.ColoredConsole >= 2.0.0-*"
     ],
     ".NETCoreApp,Version=v1.0": []
   },

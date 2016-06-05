@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Booking.Api
 {
@@ -27,6 +28,11 @@ namespace Booking.Api
                 
             Configuration = builder.Build();
             HostingEnvironment = env;
+            
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
         }
         
         public void ConfigureServices(IServiceCollection services)
@@ -76,7 +82,7 @@ namespace Booking.Api
         
         public void Configure(IApplicationBuilder app, ILoggerFactory logger)
         {
-            logger.AddConsole(Configuration.GetSection("Logging"));
+            logger.AddSerilog();
             
             if(HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
