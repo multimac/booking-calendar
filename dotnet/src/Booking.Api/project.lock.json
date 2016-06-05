@@ -1038,18 +1038,6 @@
           "lib/netstandard1.1/Microsoft.Extensions.Configuration.CommandLine.dll": {}
         }
       },
-      "Microsoft.Extensions.Configuration.EnvironmentVariables/1.0.0-rc2-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration": "1.0.0-rc2-final"
-        },
-        "compile": {
-          "lib/netstandard1.3/Microsoft.Extensions.Configuration.EnvironmentVariables.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/Microsoft.Extensions.Configuration.EnvironmentVariables.dll": {}
-        }
-      },
       "Microsoft.Extensions.Configuration.FileExtensions/1.0.0-rc2-final": {
         "type": "package",
         "dependencies": {
@@ -4427,18 +4415,6 @@
         "Microsoft.Extensions.Configuration.CommandLine.nuspec",
         "lib/netstandard1.1/Microsoft.Extensions.Configuration.CommandLine.dll",
         "lib/netstandard1.1/Microsoft.Extensions.Configuration.CommandLine.xml"
-      ]
-    },
-    "Microsoft.Extensions.Configuration.EnvironmentVariables/1.0.0-rc2-final": {
-      "sha512": "kKc8TDxSkSxRp3TpVWxEEYDy3Fqiu4ebdll4PGqa3UNtkfTRz/Zrlld0g5Vcr/01z8vaowk/bv1DN2wOtx4L5Q==",
-      "type": "package",
-      "files": [
-        "Microsoft.Extensions.Configuration.EnvironmentVariables.1.0.0-rc2-final.nupkg.sha512",
-        "Microsoft.Extensions.Configuration.EnvironmentVariables.nuspec",
-        "lib/net451/Microsoft.Extensions.Configuration.EnvironmentVariables.dll",
-        "lib/net451/Microsoft.Extensions.Configuration.EnvironmentVariables.xml",
-        "lib/netstandard1.3/Microsoft.Extensions.Configuration.EnvironmentVariables.dll",
-        "lib/netstandard1.3/Microsoft.Extensions.Configuration.EnvironmentVariables.xml"
       ]
     },
     "Microsoft.Extensions.Configuration.FileExtensions/1.0.0-rc2-final": {
@@ -9620,7 +9596,6 @@
       "Microsoft.AspNetCore.Server.Kestrel.Https >= 1.0.0-*",
       "Microsoft.Extensions.Configuration >= 1.0.0-*",
       "Microsoft.Extensions.Configuration.CommandLine >= 1.0.0-*",
-      "Microsoft.Extensions.Configuration.EnvironmentVariables >= 1.0.0-*",
       "Microsoft.Extensions.Configuration.Json >= 1.0.0-*",
       "Microsoft.Extensions.Logging >= 1.0.0-*",
       "Microsoft.Extensions.Logging.Console >= 1.0.0-*",
