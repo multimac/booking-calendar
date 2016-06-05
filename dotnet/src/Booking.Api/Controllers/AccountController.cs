@@ -72,7 +72,7 @@ namespace Booking.Api.Controllers
             {
                 ErrorModel error;
                 if (signInResult.RequiresTwoFactor)
-                    error = new ErrorModel(ErrorCode.TwoFactorRequired);
+                    error = ErrorResponseFactory.GenerateModel(ErrorCode.TwoFactorRequired);
                 else
                     error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
                     
