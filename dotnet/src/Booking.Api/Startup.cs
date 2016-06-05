@@ -16,6 +16,7 @@ namespace Booking.Api
     public class Startup
     {
         private IConfigurationRoot Configuration { get; } = null;
+        private IHostingEnvironment HostingEnvironment { get; } = null;
         
         public Startup(IHostingEnvironment env)
         {
@@ -25,6 +26,7 @@ namespace Booking.Api
                 .AddJsonFile($"appsettings-{env.EnvironmentName}.json", optional: true);
                 
             Configuration = builder.Build();
+            HostingEnvironment = env;
         }
         
         public void ConfigureServices(IServiceCollection services)
@@ -60,7 +62,10 @@ namespace Booking.Api
             });
             
             // Set up and configure MVC
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+                options.Filters.Add(typeof(GlobalExceptionFilter));
+            });
             
             // Set up custom dependencies for injection
             services.AddScoped<IRoleStore<Role>, RoleStore>();
@@ -69,14 +74,12 @@ namespace Booking.Api
             services.AddScoped<ErrorResponseFactory>();
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory logger)
+        public void Configure(IApplicationBuilder app, ILoggerFactory logger)
         {
             logger.AddConsole(Configuration.GetSection("Logging"));
             
-            if(env.IsDevelopment())
-            {
+            if(HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            }
             
             app.UseIdentity();
             
