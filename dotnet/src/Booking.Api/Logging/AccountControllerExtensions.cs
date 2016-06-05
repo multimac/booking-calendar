@@ -13,7 +13,7 @@ namespace Booking.Api.Logging
             loginAttempted = LoggerMessage.Define<string>(
                 logLevel: LogLevel.Information,
                 eventId: 1,
-                formatString: "Login attempted by {User}."
+                formatString: "Login attempted by {User}"
             );
         }
         
