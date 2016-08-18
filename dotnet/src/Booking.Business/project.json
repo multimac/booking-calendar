@@ -7,19 +7,12 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0-rc2-3002702"
+      "version": "1.0.0-*"
     },
     
-    "Booking.Data": "0.1.0",
-    
-    "Microsoft.EntityFrameworkCore": "1.0.0-*"
+    "Booking.Data": "0.1.0"
   },
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dnxcore50",
-        "portable-net45+win8"
-      ]
-    }
+    "netcoreapp1.0": {}
   }
 }
