@@ -19,9 +19,12 @@
     
     "Microsoft.AspNetCore.Diagnostics": "1.0.0-*",
     "Microsoft.AspNetCore.Identity": "1.0.0-*",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-*",
     "Microsoft.AspNetCore.Localization": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-*",
-    
+
+    "Microsoft.EntityFrameworkCore": "1.0.0-*",
+
     "Microsoft.Extensions.Configuration": "1.0.0-*",
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0-*",
     "Microsoft.Extensions.Configuration.Json": "1.0.0-*",
@@ -34,6 +37,8 @@
     
     "FluentValidation": "6.3.3-alpha",
     
+    "Npgsql.EntityFrameworkCore.PostgreSQL": "1.0.1",
+
     "Serilog": "2.0.0-*",
     "Serilog.Extensions.Logging": "1.0.0-*",
     "Serilog.Sinks.ColoredConsole": "2.0.0-*"
