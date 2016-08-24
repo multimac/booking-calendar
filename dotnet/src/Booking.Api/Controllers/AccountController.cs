@@ -3,8 +3,8 @@ using Booking.Api.General;
 using Booking.Api.Logging;
 using Booking.Api.Models;
 using Booking.Api.Options;
-using Booking.Business.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -21,16 +21,16 @@ namespace Booking.Api.Controllers
         private ILogger<AccountController> Logger { get; } = null;
         private IStringLocalizer Localizer { get; } = null;
         
-        private SignInManager<User> SignInManager { get; } = null;
-        private UserManager<User> UserManager { get; } = null;
+        private SignInManager<IdentityUser> SignInManager { get; } = null;
+        private UserManager<IdentityUser> UserManager { get; } = null;
         
         public AccountController(
             ErrorResponseFactory errorResponseFactory,
             IOptions<AccountOptions> optionsAccessor,
             ILogger<AccountController> logger,
             IStringLocalizer<AccountController> localizer,
-            SignInManager<User> signInManager,
-            UserManager<User> userManager)
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager)
         {
             this.ErrorResponseFactory = errorResponseFactory;
             this.Options = optionsAccessor.Value;
