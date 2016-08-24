@@ -5,18 +5,13 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.0-*"
-    },
-    
     "Booking.Business": "0.1.0-*",
     "Booking.Common": "0.1.0-*",
     "Booking.Data": "0.1.0-*",
     
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0-*",
     "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.0-*",
-    
+
     "Microsoft.AspNetCore.Diagnostics": "1.0.0-*",
     "Microsoft.AspNetCore.Identity": "1.0.0-*",
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-*",
@@ -28,15 +23,15 @@
     "Microsoft.Extensions.Configuration": "1.0.0-*",
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0-*",
     "Microsoft.Extensions.Configuration.Json": "1.0.0-*",
-    
-    "Microsoft.Extensions.Logging" : "1.0.0-*",
+
+    "Microsoft.Extensions.Logging": "1.0.0-*",
     "Microsoft.Extensions.Logging.Console": "1.0.0-*",
     
     "Microsoft.Extensions.Options": "1.0.0-*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0-*",
-    
+
     "FluentValidation": "6.3.3-alpha",
-    
+
     "Npgsql.EntityFrameworkCore.PostgreSQL": "1.0.1",
 
     "Serilog": "2.0.0-*",
@@ -44,6 +39,13 @@
     "Serilog.Sinks.ColoredConsole": "2.0.0-*"
   },
   "frameworks": {
-    "netcoreapp1.0": {}
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0-*"
+        }
+      }
+    }
   }
 }
