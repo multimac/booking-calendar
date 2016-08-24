@@ -22,6 +22,7 @@ namespace Booking.Api
                 .UseConfiguration(config)
                 .UseContentRoot(currentDir)
                 .UseStartup<Startup>()
+                .UseKestrel()
                 .Build();
                 
             host.Run();
