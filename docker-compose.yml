@@ -1,12 +1,17 @@
 version: '2'
 services:
   api:
+    build:
+      context: ./dotnet/
+      dockerfile: Booking.Api.Dockerfile
     links:
       - db:booking-database
     image: booking-api
   db:
+    build: ./database/
     image: booking-database
   web:
+    build: ./web/
     links:
       - api:booking-api
     image: booking-web
