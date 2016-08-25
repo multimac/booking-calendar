@@ -5,7 +5,7 @@ using System.Linq;
 namespace Booking.Common.Extensions
 {
     public static class IEnumerableExtensions
-    {   
+    {
         public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> source, int size)
         {
             T[] bucket = null;
@@ -41,28 +41,29 @@ namespace Booking.Common.Extensions
                 elements[swapIndex] = elements[i];
             }
         }
-        public static IEnumerable<T> Traverse<T>(this T source, Func<T, IEnumerable<T>> childSelector)
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> selector)
         {
-            yield return source;
-            
-            var children = childSelector(source);
-            if(children == null)
-                yield break;
-            
-            foreach (var child in children.Traverse(childSelector))
-                yield return child;
+            foreach(var item in source)
+            {
+                var children = selector(item);
+                if(children == null)
+                    continue;
+
+                foreach(var child in children)
+                    yield return child;
+            }
         }
-        public static IEnumerable<T> Traverse<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> childSelector)
+        public static IEnumerable<T> Traverse<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> selector)
         {
             foreach (var item in source)
             {
                 yield return item;
                 
-                var children = childSelector(item);
+                var children = selector(item);
                 if(children == null)
                     continue;
                 
-                foreach (var child in children.Traverse(childSelector))
+                foreach (var child in children.Traverse(selector))
                     yield return child;
             }
         }

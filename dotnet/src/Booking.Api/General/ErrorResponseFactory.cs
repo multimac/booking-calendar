@@ -58,7 +58,7 @@ namespace Booking.Api.General
         {
             var model = GenerateModel(ErrorCode.InternalServerError,
                 String.Join(" => ",
-                    ex.Traverse(e => e.InnerException?.Yield())
+                    ex.Yield().Traverse(e => e.InnerException?.Yield())
                         .Select(e => e.GetType().Name)
                 )
             );
