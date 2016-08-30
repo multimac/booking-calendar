@@ -2,7 +2,7 @@ version: '2'
 services:
   api:
     ports:
-      - "4590"
+      - "4590:4590"
     volumes:
       - ./dotnet/:/dotnet/
   db:
