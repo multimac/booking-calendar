@@ -2,4 +2,8 @@
 bin/
 obj/
 
+/.env
+
+*-local.*
+
 project.lock.json
