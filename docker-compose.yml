@@ -4,11 +4,17 @@ services:
     build:
       context: ./dotnet/
       dockerfile: Booking.Api.Dockerfile
+    environment:
+      BOOKING_API_CONNECTIONSTRING: "${BOOKING_API_CONNECTIONSTRING}"
+      BOOKING_API_PASSWORD: "${BOOKING_API_PASSWORD}"
     links:
       - db:booking-database
     image: booking-api
   db:
-    build: ./database/
+    build: ./db/
+    environment:
+      BOOKING_API_PASSWORD: "${BOOKING_API_PASSWORD}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     image: booking-database
   web:
     build: ./web/

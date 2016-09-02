@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using Booking.Api.General;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using Serilog;
 
 namespace Booking.Api
@@ -24,7 +26,12 @@ namespace Booking.Api
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings-{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings-{env.EnvironmentName.ToLower()}.json", optional: true);
+
+            if(env.IsDevelopment())
+                builder.AddUserSecrets();
+            else
+                builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
             HostingEnvironment = env;
@@ -38,27 +45,37 @@ namespace Booking.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Set up and configure Entity Framework
-            services.AddEntityFrameworkNpgsql()
-                .AddDbContext<BookingContext>(options =>
-                {
-                    options.UseNpgsql(Configuration.GetConnectionString("Default"));
-                });
+            NpgsqlConnectionStringBuilder connStringBuilder = new NpgsqlConnectionStringBuilder(
+                Configuration["BOOKING_API_CONNECTIONSTRING"]
+            );
+
+            connStringBuilder.Password = Configuration["BOOKING_API_PASSWORD"];
+
+            services
+                .AddEntityFrameworkNpgsql()
+                .AddDbContext<BookingContext>(
+                    options => options.UseNpgsql(connStringBuilder.ConnectionString)
+                );
 
             // Set up and configure Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookingContext>();
+            services
+                .AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<BookingContext, Guid>();
 
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 8;
-
                 options.User.RequireUniqueEmail = true;
+
+                var appCookie = options.Cookies.ApplicationCookie;
+                appCookie.AutomaticChallenge = false;
             });
 
             // Set up and configure Localization
             services.AddLocalization(
-                options => { options.ResourcesPath = Configuration["Localization:ResourcePath"]; }
+                options => options.ResourcesPath = Configuration["Localization:ResourcePath"]
             );
+
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var defaultCulture = Configuration["Localization:DefaultCulture"];
@@ -77,10 +94,9 @@ namespace Booking.Api
             });
 
             // Set up and configure MVC
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(GlobalExceptionFilter));
-            });
+            services.AddMvc(
+                options => options.Filters.Add(typeof(GlobalExceptionFilter))
+            );
 
             // Set up custom dependencies for injection
             services.AddScoped<ErrorResponseFactory>();
@@ -90,7 +106,7 @@ namespace Booking.Api
         {
             logger.AddSerilog();
 
-            if(HostingEnvironment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             app.UseIdentity();
