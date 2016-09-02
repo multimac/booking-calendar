@@ -80,6 +80,8 @@ namespace Booking.Api.Controllers
                 return new ObjectResult(error) { StatusCode = 401 };
             }
 
+            Logger.LoginSuccessful(model.Email);
+
             return new StatusCodeResult(200);
         }
 
