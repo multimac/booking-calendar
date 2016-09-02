@@ -27,19 +27,6 @@ namespace Booking.Api.Models
         public ErrorModel[] InnerErrors { get; set; } = null;
         
         public ErrorModel() { }
-        public ErrorModel(ErrorCode code)
-        {
-            this.Code = code;
-            this.Reason = code.ToString();
-        }
-        public ErrorModel(ErrorCode code, string message) : this(code)
-        {
-            this.Message = message;
-        }
-        public ErrorModel(ErrorCode code, string message, ErrorModel[] innerErrors) : this(code, message)
-        {
-            this.InnerErrors = innerErrors;
-        }
         
         public void Normalize()
         {

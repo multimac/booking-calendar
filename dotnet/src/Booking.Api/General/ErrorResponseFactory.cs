@@ -43,6 +43,10 @@ namespace Booking.Api.General
             };
         }
         
+        /// <summary>
+        /// Generates a response with a message for each error in the <see cref="ModelStateDictionary"/>
+        /// </summary>
+        /// <param name="state">The state containing all error messages</param>
         public IActionResult InvalidModelState(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary state)
         {
             var model = GenerateModel(ErrorCode.ParseError,
@@ -54,6 +58,10 @@ namespace Booking.Api.General
             
             return new ObjectResult(model) { StatusCode = 400 };
         }
+        /// <summary>
+        /// Generates a response with a basic message mentioning the <see cref="Exception"/> that occurred
+        /// </summary>
+        /// <param name="ex">The exception which occurred</param>
         public IActionResult InternalServerError(System.Exception ex)
         {
             var model = GenerateModel(ErrorCode.InternalServerError,
@@ -65,10 +73,14 @@ namespace Booking.Api.General
             
             return new ObjectResult(model) { StatusCode = 500 };
         }
+        /// <summary>
+        /// Generates a response with a message for each validation error in the <see cref="IList<ValidationFailure>"/>
+        /// </summary>
+        /// <param name="errors">The list of validation errors that occurred</param>
         public IActionResult ValidationFailed(IList<FluentValidation.Results.ValidationFailure> errors)
         {
             var model = GenerateModel(ErrorCode.ValidationError,
-                errors.Select(err => new ErrorModel(ErrorCode.ValidationError, err.ToString()))
+                errors.Select(err => GenerateModel(ErrorCode.ValidationError, err.ToString()))
                     .ToArray()
             );
 
