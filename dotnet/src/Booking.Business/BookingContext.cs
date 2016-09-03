@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Threading.Tasks;
 using Booking.Data.Mapping;
+using Booking.Data.Seeding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -26,6 +28,19 @@ namespace Booking.Business
 
                 var mapping = System.Activator.CreateInstance(type);
                 ((IEntityMappingConfiguration)mapping).Map(builder);
+            }
+        }
+
+        public async Task EnsureSeedData(System.IServiceProvider services)
+        {
+            var types = typeof(BookingContext).GetTypeInfo().Assembly.GetTypes();
+            foreach (var type in types)
+            {
+                if (!typeof(IEntitySeeder).IsAssignableFrom(type))
+                    continue;
+
+                var seeder = System.Activator.CreateInstance(type);
+                await ((IEntitySeeder)seeder).Seed(this, services);
             }
         }
     }
