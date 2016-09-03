@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Booking.Api.General;
 using Booking.Business;
 using Microsoft.AspNetCore.Builder;
@@ -28,7 +30,7 @@ namespace Booking.Api
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings-{env.EnvironmentName.ToLower()}.json", optional: true);
 
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
                 builder.AddUserSecrets();
             else
                 builder.AddEnvironmentVariables();
@@ -69,6 +71,7 @@ namespace Booking.Api
 
                 var appCookie = options.Cookies.ApplicationCookie;
                 appCookie.AutomaticChallenge = false;
+                appCookie.CookieName = Configuration["Identity:CookieName"];
             });
 
             // Set up and configure Localization
@@ -89,6 +92,12 @@ namespace Booking.Api
                     culture: defaultCulture, uiCulture: defaultCulture
                 );
 
+                options.RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new CookieRequestCultureProvider() { CookieName = Configuration["Localization:CookieName"] },
+                    new AcceptLanguageHeaderRequestCultureProvider()
+                };
+
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
@@ -106,7 +115,18 @@ namespace Booking.Api
         {
             logger.AddSerilog();
 
+            // Seed any missing data
             if (HostingEnvironment.IsDevelopment())
+            {
+                using(var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
+                    context.EnsureSeedData(scope.ServiceProvider).GetAwaiter().GetResult();
+                }
+            }
+
+            // Set up pipeline
+            if(HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             app.UseIdentity();
