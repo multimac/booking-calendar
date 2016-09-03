@@ -59,6 +59,12 @@ namespace Booking.Api
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );
 
+            services.Configure<Business.Options.IdentityOptions>(options => 
+            {
+                options.AdminEmail = Configuration["BOOKING_API_ADMIN_EMAIL"];
+                options.AdminPassword = Configuration["BOOKING_API_ADMIN_PASSWORD"];
+            });
+
             // Set up and configure Identity
             services
                 .AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
