@@ -34,22 +34,26 @@ namespace Booking.Business.Models.Identity
             var userManager = services.GetRequiredService<UserManager<IdentityUser<Guid>>>();
 
             var existingAdmin = await userManager.FindByNameAsync(AdminUser.UserName);
-            if (existingAdmin != null)
-            {
-                if (existingAdmin.Email == options.AdminEmail)
-                    return;
-
-                logger.LogWarning("Admin user exists with incorrect email, deleting...");
-                await userManager.DeleteAsync(existingAdmin);
-            }
-
             if (options.AdminEmail == null)
+            {
+                if (existingAdmin != null)
+                    await userManager.DeleteAsync(existingAdmin);
+
                 return;
+            }
 
             var existingUser = await userManager.FindByEmailAsync(options.AdminEmail);
             if (existingUser != null)
             {
-                logger.LogWarning("User already exists with requested admin email, skipping...");
+                if (existingAdmin == null || existingAdmin.Id != existingUser.Id)
+                    throw new InvalidOperationException("User already exists with admin email, skipping...");
+
+                return;
+            }
+
+            if (existingAdmin != null)
+            {
+                await userManager.SetEmailAsync(existingAdmin, options.AdminEmail);
                 return;
             }
 
