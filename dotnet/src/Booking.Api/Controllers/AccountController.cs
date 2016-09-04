@@ -4,6 +4,7 @@ using Booking.Api.General;
 using Booking.Api.Logging;
 using Booking.Api.Models;
 using Booking.Api.Options;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +90,13 @@ namespace Booking.Api.Controllers
         public async Task<IActionResult> Logout()
         {
             await SignInManager.SignOutAsync();
+            return new StatusCodeResult(200);
+        }
+
+        [Authorize]
+        [HttpPost("ping")]
+        public IActionResult Ping()
+        {
             return new StatusCodeResult(200);
         }
     }
