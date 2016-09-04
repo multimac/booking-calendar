@@ -2,9 +2,9 @@
 
 ## Initial Setup
 
-1. Create .env file in root to store Docker Compose development variables for the database (db)
+1. Create .env file in root to store environment variables for running app inside Docker
 2. If you want to debug the API locally (i.e. not inside docker)...
-   1. Go to ./dotnet/src/Booking.Api/ and use ```dotnet user-secrets``` to set up development variables for the API (api)
+   1. Go to ./dotnet/src/Booking.Api/ and use ```dotnet user-secrets``` to set up development variables for the API
 
 ### Possible variables:
 ```
