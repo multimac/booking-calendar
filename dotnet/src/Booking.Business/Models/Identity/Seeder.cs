@@ -24,6 +24,8 @@ namespace Booking.Business.Models.Identity
 
             await CreateAdminUser(services);
         }
+        public override Task SeedDev(BookingContext context, IServiceProvider services) => Task.CompletedTask;
+
         private async Task CreateAdminUser(IServiceProvider services)
         {
             var logger = services.GetRequiredService<ILogger<Seeder>>();
