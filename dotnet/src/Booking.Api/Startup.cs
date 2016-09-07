@@ -76,7 +76,6 @@ namespace Booking.Api
                 options.User.RequireUniqueEmail = true;
 
                 var appCookie = options.Cookies.ApplicationCookie;
-                appCookie.AutomaticChallenge = false;
                 appCookie.CookieName = Configuration["Identity:CookieName"];
             });
 
