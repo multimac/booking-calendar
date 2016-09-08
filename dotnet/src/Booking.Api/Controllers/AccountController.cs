@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Booking.Api.General;
-using Booking.Api.Logging;
+using Booking.Api.Logging.Controllers;
 using Booking.Api.Models;
-using Booking.Api.Options;
+using Booking.Api.Options.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

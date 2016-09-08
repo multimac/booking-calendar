@@ -1,4 +1,4 @@
-using Booking.Api.Logging;
+using Booking.Api.Logging.General;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;

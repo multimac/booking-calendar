@@ -2,7 +2,7 @@ using System;
 using Booking.Api.Controllers;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Api.Logging
+namespace Booking.Api.Logging.Controllers
 {
     public static class AccountControllerExtensions
     {

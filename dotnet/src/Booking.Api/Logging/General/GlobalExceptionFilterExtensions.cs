@@ -2,7 +2,7 @@ using System;
 using Booking.Api.General;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Api.Logging
+namespace Booking.Api.Logging.General
 {
     public static class GlobalExceptionFilterExtensions
     {
