@@ -10,6 +10,9 @@ services:
     links:
       - db:booking-database
     image: booking-api
+  app:
+    build: ./app/
+    image: booking-app
   db:
     build: ./db/
     environment:
@@ -23,3 +26,5 @@ services:
     image: booking-web
     ports:
       - "80:80"
+    volumes_from:
+      - app:ro

@@ -1,0 +1,10 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "description": "Typescript and other static files for http://www.calend.ar/",
+  "author": "David Symons",
+  "dependencies": {
+    "gulp": "3.9.1",
+    "typescript": "^1.8.10"
+  }
+}

@@ -5,9 +5,9 @@ services:
       - "4590:4590"
     volumes:
       - ./dotnet/:/dotnet/
+  app:
+    volumes:
+      - ./app/static/:/data/web/static/
   db:
     ports:
       - "5432:5432"
-  web:
-    volumes:
-      - ./web/static/:/data/web/static/
