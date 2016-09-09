@@ -11,4 +11,3 @@ services:
   web:
     volumes:
       - ./web/static/:/data/web/static/
-      - ./web/www/:/data/web/www/
