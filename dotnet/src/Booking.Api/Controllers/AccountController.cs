@@ -20,8 +20,8 @@ namespace Booking.Api.Controllers
         private ErrorResponseFactory ErrorResponseFactory { get; } = null;
         private AccountOptions Options { get; } = null;
 
-        private ILogger<AccountController> Logger { get; } = null;
         private IStringLocalizer Localizer { get; } = null;
+        private ILogger<AccountController> Logger { get; } = null;
 
         private SignInManager<IdentityUser<Guid>> SignInManager { get; } = null;
         private UserManager<IdentityUser<Guid>> UserManager { get; } = null;
@@ -29,16 +29,16 @@ namespace Booking.Api.Controllers
         public AccountController(
             ErrorResponseFactory errorResponseFactory,
             IOptions<AccountOptions> optionsAccessor,
-            ILogger<AccountController> logger,
             IStringLocalizer<AccountController> localizer,
+            ILogger<AccountController> logger,
             SignInManager<IdentityUser<Guid>> signInManager,
             UserManager<IdentityUser<Guid>> userManager)
         {
             this.ErrorResponseFactory = errorResponseFactory;
             this.Options = optionsAccessor.Value;
 
-            this.Logger = logger;
             this.Localizer = localizer;
+            this.Logger = logger;
 
             this.SignInManager = signInManager;
             this.UserManager = userManager;
