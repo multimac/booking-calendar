@@ -5,6 +5,11 @@
   "author": "David Symons",
   "dependencies": {
     "gulp": "3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.6",
     "typescript": "^1.8.10"
+  },
+  "scripts": {
+    "gulp": "gulp"
   }
 }

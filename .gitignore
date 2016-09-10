@@ -3,8 +3,11 @@ node_modules/
 bin/
 obj/
 
+app/static/**/*.js
+
 *-local.*
 
 .env
 
+npm-debug.log
 project.lock.json
