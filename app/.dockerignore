@@ -1,2 +1,6 @@
-node_modules/
-static/
+node_modules
+typings
+
+# Weird rule to work around bug in Compose (https://github.com/docker/compose/issues/3931)
+# Required to keep system-config.js but ignore everything else
+static/*/*

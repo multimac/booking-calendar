@@ -1,6 +1,9 @@
 FROM node:slim
 COPY ./ /data/web/
 
-RUN cd /data/web/ && npm --loglevel=warn install --production && npm run gulp -- prod
+RUN apt-get update && apt-get install -y git
+
+RUN cd /data/web/ && npm --loglevel=warn install --production
+RUN cd /data/web/ && npm run jspm -- install && npm run typings -- install && npm run gulp -- prod
 
 VOLUME /data/web/static/

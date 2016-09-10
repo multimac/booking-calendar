@@ -1,9 +1,12 @@
 .vscode/
-node_modules/
 bin/
 obj/
 
-app/static/**/*.js
+node_modules/
+typings/
+
+app/static/*
+!app/static/system-config.js
 
 *-local.*
 
