@@ -2,6 +2,16 @@ var gulp = require("gulp"),
     sourcemaps = require("gulp-sourcemaps"),
     ts = require("gulp-typescript");
 
+var del = require("del");
+
+gulp.task("default", ["prod"]);
+gulp.task("prod", ["typescript"]);
+
+gulp.task("clean", function() {
+    return del(["static/**/*.js"]);
+});
+
+
 var tsProject = ts.createProject("tsconfig.json", {
     typescript: require("typescript")
 });
@@ -14,6 +24,3 @@ gulp.task("typescript", function() {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("./static/"));
 });
-
-gulp.task("default", ["prod"]);
-gulp.task("prod", ["typescript"]);
