@@ -1,10 +1,9 @@
 System.config({
-  baseURL: "/",
+  baseURL: "//static.calend.ar/",
   defaultJSExtensions: true,
   transpiler: false,
   paths: {
-    "npm:*": "jspm_packages/npm/*",
-    "*": "//static.calend.ar/*"
+    "npm:*": "jspm_packages/npm/*"
   },
 
   map: {
