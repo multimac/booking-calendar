@@ -3,12 +3,14 @@
     <head>
         <title>Calend.Ar</title>
     </head>
-    <body aurelia-app="lib/main">
+    <body aurelia-app="lib/bootstrap">
         <input type="hidden" name="@ViewData["AntiForgeryTokenName"]" value="@ViewData["AntiForgeryTokenValue"]" />
         
         <script src="http://static.calend.ar/jspm_packages/system.js"></script>
         <script src="http://static.calend.ar/system-config.js"></script>
 
-        <script>System.import("aurelia-bootstrapper");</script>
+        <script>
+            System.import("aurelia-bootstrapper");
+        </script>
     </body>
 </html>
