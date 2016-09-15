@@ -6,6 +6,7 @@
   "dependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^2.13.6",
     "jspm": "^0.16.45",
