@@ -24,7 +24,8 @@
     },
     "configFile": "static/system-config.js",
     "dependencies": {
-      "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^1.0.0"
+      "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^1.0.0",
+      "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.0.0"
     }
   }
 }
