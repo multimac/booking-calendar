@@ -1,0 +1,13 @@
+<template>
+    <div class="center">
+        <form submit.trigger="performLogin()">
+            <label for="email">Email</label>
+            <input id="email" type="text" value.bind="email" />
+
+            <label for="password">Password</label>
+            <input id="password" type="password" value.bind="password" />
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</template>
