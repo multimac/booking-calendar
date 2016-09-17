@@ -107,6 +107,8 @@ namespace Booking.Api
             });
 
             // Set up and configure MVC
+            services.AddCors();
+
             services.AddMvc(
                 options => options.Filters.Add(typeof(GlobalExceptionFilter))
             );
@@ -132,6 +134,12 @@ namespace Booking.Api
             // Set up pipeline
             if(HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+            );
 
             app.UseIdentity();
 
