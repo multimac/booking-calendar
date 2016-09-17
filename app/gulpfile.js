@@ -44,7 +44,7 @@ gulp.task("typescript", function () {
         .pipe(gulp.dest("./static/"));
 });
 
-gulp.task("watch", function () {
+gulp.task("watch", ["html", "styles", "typescript"], function () {
     gulp.watch("html/**/*.html", ["html"]);
     gulp.watch("styles/**/*.scss", ["styles"]);
     gulp.watch("lib/**/*.ts", ["typescript"]);
