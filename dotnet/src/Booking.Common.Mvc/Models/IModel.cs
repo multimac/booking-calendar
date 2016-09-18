@@ -1,4 +1,4 @@
-namespace Booking.Api.Models
+namespace Booking.Common.Mvc.Models
 {
     public interface IModel
     {

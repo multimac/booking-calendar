@@ -1,9 +1,10 @@
-using Booking.Api.Logging.General;
+using Booking.Common.Mvc.General;
+using Booking.Common.Mvc.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Api.General
+namespace Booking.Common.Mvc.Filters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {

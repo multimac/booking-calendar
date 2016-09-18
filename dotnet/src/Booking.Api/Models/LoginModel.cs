@@ -1,4 +1,5 @@
 using Booking.Common.Extensions;
+using Booking.Common.Mvc.Models;
 using FluentValidation;
 
 namespace Booking.Api.Models

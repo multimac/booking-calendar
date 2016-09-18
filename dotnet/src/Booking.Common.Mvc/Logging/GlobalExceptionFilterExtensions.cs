@@ -1,8 +1,8 @@
 using System;
-using Booking.Api.General;
+using Booking.Common.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Api.Logging.General
+namespace Booking.Common.Mvc.Logging
 {
     public static class GlobalExceptionFilterExtensions
     {

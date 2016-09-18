@@ -1,6 +1,6 @@
 using Booking.Common.Extensions;
 
-namespace Booking.Api.Models
+namespace Booking.Common.Mvc.Models
 {
     public enum ErrorCode
     {
