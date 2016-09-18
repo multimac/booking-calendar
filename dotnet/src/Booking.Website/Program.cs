@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace Booking.Api
+namespace Booking.Website
 {
     public class Program
     {

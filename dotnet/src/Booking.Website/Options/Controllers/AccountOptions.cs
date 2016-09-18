@@ -1,4 +1,4 @@
-namespace Booking.Api.Options.Controllers
+namespace Booking.Website.Options.Controllers
 {
     public class AccountOptions
     {

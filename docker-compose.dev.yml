@@ -11,3 +11,8 @@ services:
   db:
     ports:
       - "5432:5432"
+  site:
+    ports:
+      - "4591:4590"
+    volumes:
+      - ./dotnet/:/dotnet/

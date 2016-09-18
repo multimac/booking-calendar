@@ -2,7 +2,7 @@ using Booking.Common.Extensions;
 using Booking.Common.Mvc.Models;
 using FluentValidation;
 
-namespace Booking.Api.Models
+namespace Booking.Website.Models
 {
     public class LoginModel : IModel
     {

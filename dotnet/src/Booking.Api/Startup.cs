@@ -59,7 +59,7 @@ namespace Booking.Api
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );
 
-            services.Configure<Business.Options.IdentityOptions>(options => 
+            services.Configure<Business.Options.IdentityOptions>(options =>
             {
                 options.AdminEmail = Configuration["BOOKING_API_ADMIN_EMAIL"];
                 options.AdminPassword = Configuration["BOOKING_API_ADMIN_PASSWORD"];
@@ -125,7 +125,7 @@ namespace Booking.Api
             // Seed any missing data
             if (HostingEnvironment.IsDevelopment())
             {
-                using(var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
                     var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
                     context.EnsureSeedData(scope.ServiceProvider).GetAwaiter().GetResult();
@@ -133,14 +133,10 @@ namespace Booking.Api
             }
 
             // Set up pipeline
-            if(HostingEnvironment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseCors(builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin()
-            );
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseIdentity();
 

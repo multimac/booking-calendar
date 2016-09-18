@@ -116,23 +116,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  <data name="Unknown">
-    <value>Something went really wrong within the application, you should never get this...</value>
-  </data>
-  <data name="InternalServerError">
-    <value>An unhandled error occurred within the application.</value>
-  </data>
-  <data name="ParseError">
-    <value>Your request could not be parsed, please make sure it's not malformed.</value>
-  </data>
-  <data name="ValidationError">
-    <value>The parameters in your request failed validation, please check the API for validation requirements.</value>
-  </data>
-  <data name="FailedLogin">
-    <value></value><!-- Don't give any feedback for failed logins -->
-  </data>
-  <data name="TwoFactorRequired">
-    <value></value><!-- Less of an error and more a notification of required action -->
-  </data>
 </root>

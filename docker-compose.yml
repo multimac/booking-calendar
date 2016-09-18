@@ -5,8 +5,8 @@ services:
       context: ./dotnet/
       dockerfile: Booking.Api.Dockerfile
     environment:
-      BOOKING_API_CONNECTIONSTRING: "${BOOKING_API_CONNECTIONSTRING}"
-      BOOKING_API_PASSWORD: "${BOOKING_API_PASSWORD}"
+      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
+      BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
     links:
       - db:booking-database
     image: booking-api
@@ -16,13 +16,24 @@ services:
   db:
     build: ./db/
     environment:
-      BOOKING_API_PASSWORD: "${BOOKING_API_PASSWORD}"
+      BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     image: booking-database
+  site:
+    build:
+      context: ./dotnet/
+      dockerfile: Booking.Website.Dockerfile
+    environment:
+      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
+      BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
+    links:
+      - db:booking-database
+    image: booking-site
   web:
     build: ./web/
     links:
       - api:booking-api
+      - site:booking-site
     image: booking-web
     ports:
       - "80:80"

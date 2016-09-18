@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Booking.Api.Logging.Controllers;
-using Booking.Api.Models;
-using Booking.Api.Options.Controllers;
+using Booking.Website.Logging.Controllers;
+using Booking.Website.Models;
+using Booking.Website.Options.Controllers;
 using Booking.Common.Mvc.General;
 using Booking.Common.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Booking.Api.Controllers
+namespace Booking.Website.Controllers
 {
     [Route("[controller]")]
     public class AccountController : Controller

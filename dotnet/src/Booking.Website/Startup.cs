@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using Serilog;
 
-namespace Booking.Api
+namespace Booking.Website
 {
     public class Startup
     {
@@ -48,10 +48,10 @@ namespace Booking.Api
         {
             // Set up and configure Entity Framework
             NpgsqlConnectionStringBuilder connStringBuilder = new NpgsqlConnectionStringBuilder(
-                Configuration["BOOKING_API_CONNECTIONSTRING"]
+                Configuration["BOOKING_CONNECTIONSTRING"]
             );
 
-            connStringBuilder.Password = Configuration["BOOKING_API_PASSWORD"];
+            connStringBuilder.Password = Configuration["BOOKING_PASSWORD"];
 
             services
                 .AddEntityFrameworkNpgsql()
@@ -61,8 +61,8 @@ namespace Booking.Api
 
             services.Configure<Business.Options.IdentityOptions>(options => 
             {
-                options.AdminEmail = Configuration["BOOKING_API_ADMIN_EMAIL"];
-                options.AdminPassword = Configuration["BOOKING_API_ADMIN_PASSWORD"];
+                options.AdminEmail = Configuration["BOOKING_ADMIN_EMAIL"];
+                options.AdminPassword = Configuration["BOOKING_ADMIN_PASSWORD"];
             });
 
             // Set up and configure Identity
@@ -136,11 +136,7 @@ namespace Booking.Api
             if(HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseCors(builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin()
-            );
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseIdentity();
 

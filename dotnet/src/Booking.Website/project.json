@@ -1,6 +1,6 @@
 {
   "version": "0.1.0-*",
-  "userSecretsId": "booking-api-secrets",
+  "userSecretsId": "booking-secrets",
 
   "buildOptions": {
     "debugType": "portable",
