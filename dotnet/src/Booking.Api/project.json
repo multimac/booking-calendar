@@ -8,10 +8,10 @@
     "preserveCompilationContext": true
   },
   "dependencies": {
-    "Booking.Business": "0.1.0-*",
-    "Booking.Common": "0.1.0-*",
-    "Booking.Common.Mvc": "0.1.0-*",
-    "Booking.Data": "0.1.0-*",
+    "Booking.Business": { "target": "project" },
+    "Booking.Common": { "target": "project" },
+    "Booking.Common.Mvc": { "target": "project" },
+    "Booking.Data": { "target": "project" },
     
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0-*",
     "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.0-*",

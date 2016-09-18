@@ -5,7 +5,7 @@
     "emitEntryPoint": false
   },
   "dependencies": {
-    "Booking.Data": "0.1.0",
+    "Booking.Data": { "target": "project" },
     
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-*",
 

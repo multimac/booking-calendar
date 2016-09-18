@@ -5,7 +5,7 @@
     "emitEntryPoint": false
   },
   "dependencies": {
-    "Booking.Common": "0.1.0-*",
+    "Booking.Common": { "target": "project" },
 
     "Microsoft.AspNetCore.Hosting": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-*",
