@@ -5,6 +5,8 @@ using System.Linq;
 using Booking.Business;
 using Booking.Common.Mvc.Filters;
 using Booking.Common.Mvc.General;
+using Booking.Common.Mvc.Localization;
+using Booking.Common.Mvc.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Serilog;
@@ -80,10 +83,12 @@ namespace Booking.Api
             });
 
             // Set up and configure Localization
-            services.AddLocalization(
-                options => options.ResourcesPath = Configuration["Localization:ResourcePath"]
+            services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
+            services.Configure<StringLocalizerFactoryOptions>(options =>
+                Configuration.GetSection("Localization:Factory").Bind(options)
             );
-
+            
+            services.AddLocalization();
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var defaultCulture = Configuration["Localization:DefaultCulture"];
