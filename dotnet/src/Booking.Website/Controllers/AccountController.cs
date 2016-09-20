@@ -42,10 +42,7 @@ namespace Booking.Website.Controllers
         }
 
         [HttpGet("login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         [ValidateAntiForgeryToken, HttpPost("login")]
         public async Task<IActionResult> Login([FromForm]LoginModel model, [FromQuery]string returnUrl = null)
