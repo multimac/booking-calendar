@@ -1,23 +1,18 @@
-using Booking.Common.Extensions;
 using Booking.Common.Mvc.Models;
 using FluentValidation;
+using FluentValidation.Attributes;
 
 namespace Booking.Website.Models
 {
+    [Validator(typeof(LoginModelValidator))]
     public class LoginModel : IModel
     {
         public string Email { get; set; } = null;
         public string Password { get; set; } = null;
-        
-        public bool? RememberMe { get; set; } = null;
 
-        public void Normalize()
-        {
-            Email = Email.NullIfWhiteSpace();
-            Password = Password.NullIfWhiteSpace();
-            
-            RememberMe = RememberMe ?? false;
-        }
+        public bool RememberMe { get; set; } = false;
+
+        public void Normalize() { }
     }
     public class LoginModelValidator : AbstractValidator<LoginModel>
     {
@@ -25,8 +20,6 @@ namespace Booking.Website.Models
         {
             RuleFor(model => model.Email).NotEmpty();
             RuleFor(model => model.Password).NotEmpty();
-            
-            RuleFor(model => model.RememberMe).NotNull();
         }
     }
 }

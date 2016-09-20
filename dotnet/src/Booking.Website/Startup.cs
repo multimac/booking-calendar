@@ -8,6 +8,7 @@ using Booking.Common.Mvc.General;
 using Booking.Common.Mvc.Localization;
 using Booking.Common.Mvc.Options;
 using Booking.Website.OAuth;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -62,7 +63,7 @@ namespace Booking.Website
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );
 
-            services.Configure<Business.Options.IdentityOptions>(options => 
+            services.Configure<Business.Options.IdentityOptions>(options =>
             {
                 options.AdminEmail = Configuration["BOOKING_ADMIN_EMAIL"];
                 options.AdminPassword = Configuration["BOOKING_ADMIN_PASSWORD"];
@@ -79,7 +80,7 @@ namespace Booking.Website
 
                 var appCookie = options.Cookies.ApplicationCookie;
                 appCookie.CookieName = Configuration["Identity:CookieName"];
-                
+
                 appCookie.LoginPath = "/account/login";
             });
 
@@ -88,7 +89,7 @@ namespace Booking.Website
             services.Configure<StringLocalizerFactoryOptions>(options =>
                 Configuration.GetSection("Localization:Factory").Bind(options)
             );
-            
+
             services.AddLocalization();
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -115,11 +116,10 @@ namespace Booking.Website
 
             // Set up and configure MVC
             services.AddAntiforgery();
-            services.AddCors();
+            services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc(
-                options => options.Filters.Add(typeof(GlobalExceptionFilter))
-            );
+            services.AddMvc(options => options.Filters.Add(typeof(GlobalExceptionFilter)))
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             // Set up custom dependencies for injection
             services.AddScoped<ErrorResponseFactory>();
@@ -132,7 +132,7 @@ namespace Booking.Website
             // Seed any missing data
             if (HostingEnvironment.IsDevelopment())
             {
-                using(var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
                     var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
                     context.EnsureSeedData(scope.ServiceProvider).GetAwaiter().GetResult();
@@ -140,14 +140,13 @@ namespace Booking.Website
             }
 
             // Set up pipeline
-            if(HostingEnvironment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseIdentity();
 
-            app.UseOpenIdConnectServer(options => {
+            app.UseOpenIdConnectServer(options =>
+            {
                 options.Provider = new AuthorizationProvider();
 
                 options.AuthorizationEndpointPath = "/connect/authorize";

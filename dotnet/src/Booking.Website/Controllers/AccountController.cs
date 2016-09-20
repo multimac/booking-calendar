@@ -52,13 +52,9 @@ namespace Booking.Website.Controllers
         {
             if (!ModelState.IsValid || model == null)
                 return View(model);
-
+                
             model.Normalize();
             returnUrl = returnUrl.NullIfEmpty() ?? "/";
-
-            var validationResult = await (new LoginModelValidator()).ValidateAsync(model);
-            if (!validationResult.IsValid)
-                return View(validationResult.Errors);
 
             Logger.LoginAttempted(model.Email);
 
@@ -70,7 +66,7 @@ namespace Booking.Website.Controllers
             }
 
             var signInResult = await SignInManager.PasswordSignInAsync(
-                user, model.Password, model.RememberMe.Value,
+                user, model.Password, model.RememberMe,
                 Options.LockoutOnFailedLogin
             );
 
