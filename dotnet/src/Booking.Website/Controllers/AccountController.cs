@@ -5,13 +5,12 @@ using Booking.Website.Models;
 using Booking.Website.Options.Controllers;
 using Booking.Common.Mvc.General;
 using Booking.Common.Mvc.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Booking.Common.Extensions;
 
 namespace Booking.Website.Controllers
 {
@@ -21,7 +20,6 @@ namespace Booking.Website.Controllers
         private ErrorResponseFactory ErrorResponseFactory { get; } = null;
         private AccountOptions Options { get; } = null;
 
-        private IStringLocalizer Localizer { get; } = null;
         private ILogger<AccountController> Logger { get; } = null;
 
         private SignInManager<IdentityUser<Guid>> SignInManager { get; } = null;
@@ -30,7 +28,6 @@ namespace Booking.Website.Controllers
         public AccountController(
             ErrorResponseFactory errorResponseFactory,
             IOptions<AccountOptions> optionsAccessor,
-            IStringLocalizer<AccountController> localizer,
             ILogger<AccountController> logger,
             SignInManager<IdentityUser<Guid>> signInManager,
             UserManager<IdentityUser<Guid>> userManager)
@@ -38,24 +35,30 @@ namespace Booking.Website.Controllers
             this.ErrorResponseFactory = errorResponseFactory;
             this.Options = optionsAccessor.Value;
 
-            this.Localizer = localizer;
             this.Logger = logger;
 
             this.SignInManager = signInManager;
             this.UserManager = userManager;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginModel model)
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [ValidateAntiForgeryToken, HttpPost("login")]
+        public async Task<IActionResult> Login([FromForm]LoginModel model, [FromQuery]string returnUrl = null)
         {
             if (!ModelState.IsValid || model == null)
-                return ErrorResponseFactory.InvalidModelState(ModelState);
+                return View(model);
 
             model.Normalize();
+            returnUrl = returnUrl.NullIfEmpty() ?? "/";
 
             var validationResult = await (new LoginModelValidator()).ValidateAsync(model);
             if (!validationResult.IsValid)
-                return ErrorResponseFactory.ValidationFailed(validationResult.Errors);
+                return View(validationResult.Errors);
 
             Logger.LoginAttempted(model.Email);
 
@@ -63,7 +66,7 @@ namespace Booking.Website.Controllers
             if (user == null)
             {
                 var error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
-                return new ObjectResult(error) { StatusCode = 401 };
+                return View();
             }
 
             var signInResult = await SignInManager.PasswordSignInAsync(
@@ -79,26 +82,12 @@ namespace Booking.Website.Controllers
                 else
                     error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
 
-                return new ObjectResult(error) { StatusCode = 401 };
+                return View();
             }
 
             Logger.LoginSuccessful(model.Email);
 
-            return new StatusCodeResult(200);
-        }
-
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await SignInManager.SignOutAsync();
-            return new StatusCodeResult(200);
-        }
-
-        [Authorize]
-        [HttpPost("ping")]
-        public IActionResult Ping()
-        {
-            return new StatusCodeResult(200);
+            return Redirect(returnUrl);
         }
     }
 }

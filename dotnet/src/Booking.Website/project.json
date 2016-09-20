@@ -16,6 +16,7 @@
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0-*",
     "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.0-*",
 
+    "Microsoft.AspNetCore.Antiforgery": "1.0.0-*",
     "Microsoft.AspNetCore.Cors": "1.0.0-*",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0-*",
     "Microsoft.AspNetCore.Identity": "1.0.0-*",
@@ -36,6 +37,9 @@
     
     "Microsoft.Extensions.Options": "1.0.0-*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0-*",
+
+    "AspNet.Security.OpenIdConnect.Server": "1.0.0-beta6-final",
+    "AspNet.Security.OAuth.Validation": "1.0.0-alpha2-final",
 
     "FluentValidation": "6.3.3-alpha",
 

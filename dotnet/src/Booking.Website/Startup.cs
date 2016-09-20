@@ -7,6 +7,7 @@ using Booking.Common.Mvc.Filters;
 using Booking.Common.Mvc.General;
 using Booking.Common.Mvc.Localization;
 using Booking.Common.Mvc.Options;
+using Booking.Website.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -56,8 +57,7 @@ namespace Booking.Website
 
             connStringBuilder.Password = Configuration["BOOKING_PASSWORD"];
 
-            services
-                .AddEntityFrameworkNpgsql()
+            services.AddEntityFrameworkNpgsql()
                 .AddDbContext<BookingContext>(
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );
@@ -69,8 +69,7 @@ namespace Booking.Website
             });
 
             // Set up and configure Identity
-            services
-                .AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
+            services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BookingContext, Guid>();
 
             services.Configure<IdentityOptions>(options =>
@@ -80,6 +79,8 @@ namespace Booking.Website
 
                 var appCookie = options.Cookies.ApplicationCookie;
                 appCookie.CookieName = Configuration["Identity:CookieName"];
+                
+                appCookie.LoginPath = "/account/login";
             });
 
             // Set up and configure Localization
@@ -113,6 +114,7 @@ namespace Booking.Website
             });
 
             // Set up and configure MVC
+            services.AddAntiforgery();
             services.AddCors();
 
             services.AddMvc(
@@ -144,6 +146,16 @@ namespace Booking.Website
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseIdentity();
+
+            app.UseOpenIdConnectServer(options => {
+                options.Provider = new AuthorizationProvider();
+
+                options.AuthorizationEndpointPath = "/connect/authorize";
+                options.TokenEndpointPath = "/connect/token";
+                options.RevocationEndpointPath = "/connect/revoke";
+
+                options.AllowInsecureHttp = true;
+            });
 
             app.UseMvc();
         }
