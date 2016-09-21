@@ -1,0 +1,10 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form asp-controller="connect" asp-action="authorize" method="post">
+    @foreach (var parameter in Model.Parameters) {
+        <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
+    }
+
+    <input formaction="@Url.Action("Allow")" type="submit" value="Yes" />
+    <input formaction="@Url.Action("Deny")" type="submit" value="No" />
+</form>

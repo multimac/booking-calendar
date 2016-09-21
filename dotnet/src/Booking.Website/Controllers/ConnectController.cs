@@ -1,47 +1,63 @@
 using System;
-using System.Threading.Tasks;
-using Booking.Website.Logging.Controllers;
-using Booking.Website.Models;
-using Booking.Common.Mvc.General;
-using Booking.Common.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AspNet.Security.OpenIdConnect.Server;
+using Microsoft.AspNetCore.Builder;
+using System.Security.Claims;
+using AspNet.Security.OpenIdConnect.Extensions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Authentication;
+using Booking.Website.Models;
 
 namespace Booking.Website.Controllers
 {
-    [Route("connect")]
+    [Route("[controller]")]
     public class ConnectController : Controller
     {
-        private ErrorResponseFactory ErrorResponseFactory { get; } = null;
-
         private ILogger<ConnectController> Logger { get; } = null;
         private UserManager<IdentityUser<Guid>> UserManager { get; } = null;
 
         public ConnectController(
-            ErrorResponseFactory errorResponseFactory,
             ILogger<ConnectController> logger,
             UserManager<IdentityUser<Guid>> userManager)
         {
-            this.ErrorResponseFactory = errorResponseFactory;
-
             this.Logger = logger;
             this.UserManager = userManager;
         }
 
         [Authorize, HttpGet("authorize")]
-        public async Task<IActionResult> Authorize()
+        public IActionResult Authorize()
         {
-            return null;
+            var request = HttpContext.GetOpenIdConnectRequest();
+            var model = new AuthorizeModel { Parameters = request.Parameters };
+
+            return View(model);
         }
 
         [Authorize, ValidateAntiForgeryToken, HttpPost("authorize/allow")]
-        public async Task<IActionResult> Allow()
+        public IActionResult Allow()
         {
-            return null;
+            var request = HttpContext.GetOpenIdConnectRequest();
+
+            var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
+            identity.AddClaim(ClaimTypes.NameIdentifier, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var ticket = new AuthenticationTicket(
+                new ClaimsPrincipal(identity),
+                new AuthenticationProperties(),
+                OpenIdConnectServerDefaults.AuthenticationScheme
+            );
+
+            ticket.SetScopes(
+                OpenIdConnectConstants.Scopes.OpenId,
+                OpenIdConnectConstants.Scopes.Profile,
+                OpenIdConnectConstants.Scopes.Email
+            );
+
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
 
         [Authorize, ValidateAntiForgeryToken, HttpPost("authorize/deny")]

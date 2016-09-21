@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
@@ -15,14 +16,30 @@ namespace Booking.Website.OAuth
     {
         private static readonly string InvalidGrantMessage =
             "Only the authorization code and refresh token grants are accepted by this authorization server";
-            
         private static readonly string InvalidResponseMessage =
             "Only the authorization code flow is supported by this server.";
+
+        private static readonly string[] ValidAuthorizeEndpoints
+            = new string[] { "/allow", "/deny" };
+
+        public override Task MatchEndpoint(MatchEndpointContext context)
+        {
+            if (!context.Options.AuthorizationEndpointPath.HasValue)
+                return Task.CompletedTask;
+
+            var requestPath = context.Request.Path;
+            var authorizePath = context.Options.AuthorizationEndpointPath;
+
+            if (ValidAuthorizeEndpoints.Any((endpoint) => (requestPath == authorizePath.Add(endpoint))))
+                context.MatchesAuthorizationEndpoint();
+
+            return Task.CompletedTask;
+        }
 
         public override Task ValidateAuthorizationRequest(ValidateAuthorizationRequestContext context)
         {
             var request = context.Request;
-            if(!request.IsAuthorizationCodeFlow())
+            if (!request.IsAuthorizationCodeFlow())
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.UnsupportedResponseType,
