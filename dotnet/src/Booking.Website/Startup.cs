@@ -82,6 +82,7 @@ namespace Booking.Website
                 appCookie.CookieName = Configuration["Identity:CookieName"];
 
                 appCookie.LoginPath = "/account/login";
+                appCookie.ReturnUrlParameter = "returnurl";
             });
 
             // Set up and configure Localization

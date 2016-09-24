@@ -11,12 +11,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Booking.Common.Extensions;
+using System.Linq;
 
 namespace Booking.Website.Controllers
 {
     [Route("[controller]")]
     public class AccountController : Controller
     {
+        private static readonly string ReturnUrlParam = "ReturnUrl";
+
         private ErrorResponseFactory ErrorResponseFactory { get; } = null;
         private AccountOptions Options { get; } = null;
 
@@ -42,16 +45,29 @@ namespace Booking.Website.Controllers
         }
 
         [HttpGet("login")]
-        public IActionResult Login() => View();
+        public IActionResult Login([FromQuery]string returnUrl = null)
+        {
+            ViewData[ReturnUrlParam] = returnUrl;
+            
+            if(User.Identities.Any(i => i.IsAuthenticated))
+                return Redirect(returnUrl.NullIfWhiteSpace() ?? "/");
+
+            return View();
+        }
 
         [ValidateAntiForgeryToken, HttpPost("login")]
         public async Task<IActionResult> Login([FromForm]LoginModel model, [FromQuery]string returnUrl = null)
         {
+            ViewData[ReturnUrlParam] = returnUrl;
+
             if (!ModelState.IsValid || model == null)
                 return View(model);
-                
+
             model.Normalize();
-            returnUrl = returnUrl.NullIfEmpty() ?? "/";
+            returnUrl = returnUrl.NullIfWhiteSpace() ?? "/";
+            
+            if(User.Identities.Any(i => i.IsAuthenticated))
+                return Redirect(returnUrl);
 
             Logger.LoginAttempted(model.Email);
 
