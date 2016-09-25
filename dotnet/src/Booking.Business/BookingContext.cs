@@ -10,6 +10,8 @@ namespace Booking.Business
 {
     public class BookingContext : IdentityDbContext<IdentityUser<System.Guid>, IdentityRole<System.Guid>, System.Guid>
     {
+        public DbSet<Models.OAuth.Application> Applications { get; set; }
+
         public BookingContext(DbContextOptions<BookingContext> options) : base(options)
         { }
 
