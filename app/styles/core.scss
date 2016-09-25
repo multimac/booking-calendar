@@ -25,21 +25,12 @@
     @extend .halfheight, .halfwidth;
 }
 
-.quarterheight {
+.qtrheight {
     height: 25%
 }
-.quarterwidth {
+.qtrwidth {
     width: 25%
 }
-.quartersize {
-    @extend .quartersize, .quarterwidth;
-}
-
-.padding.height {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-.padding.width {
-    padding-left: 5px;
-    padding-right: 5px;
+.qtrsize {
+    @extend .qtrsize, .qtrwidth;
 }

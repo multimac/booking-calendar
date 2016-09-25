@@ -3,22 +3,26 @@
     Layout = "Master";
 }
 
-<form asp-controller="account" asp-action="login" 
-    asp-route-returnurl="@ViewData["ReturnUrl"]"
-    class="fullsize bg-primary center columns" method="post">
+@model Booking.Website.Models.LoginModel
 
-    <div class="fullwidth center rows">
-        <input type="email" class="quarterwidth" name="Email" placeholder="Email" />
-    </div>
-    <div class="fullwidth center rows">
-        <input type="password" class="quarterwidth" name="Password" placeholder="Password" />
-    </div>
-    <div class="fullwidth center rows">
-        <label for="Remember Me" class="fg-light">Remember Me</label>
-        <input type="checkbox" name="RememberMe" value="true" />
-    </div>
+<div class="fullsize bg-primary center">
+    <form asp-controller="account" asp-action="login" 
+        asp-route-returnurl="@ViewData["ReturnUrl"]"
+        class="qtrwidth columns" method="post">
 
-    <div class="padding height"></div>
+        <div class="fullwidth center">
+            <input type="email" class="fullwidth" name="Email" placeholder="Email" />
+        </div>
+        <div class="fullwidth center">
+            <input type="password" class="fullwidth" name="Password" placeholder="Password" />
+        </div>
+        <div class="fullwidth center">
+            <label for="Remember Me" class="fg-light">Remember Me</label>
+            <input type="checkbox" name="RememberMe" value="true" />
+        </div>
 
-    <button type="submit" class="button bg-dark fg-light quarterwidth">Login</button>
-</form>
+        <div class="fullwidth"></div>
+
+        <button type="submit" class="button bg-dark fg-light fullwidth">Login</button>
+    </form>
+</div>

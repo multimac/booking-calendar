@@ -1,10 +1,26 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "Master";
+}
 
-<form asp-controller="connect" asp-action="authorize" method="post">
-    @foreach (var parameter in Model.Parameters) {
-        <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
-    }
+@model Booking.Website.Models.AuthorizeModel
 
-    <input formaction="@Url.Action("Allow")" type="submit" value="Yes" />
-    <input formaction="@Url.Action("Deny")" type="submit" value="No" />
-</form>
+<div class="fullsize bg-primary center">
+    <form asp-controller="connect" asp-action="authorize" 
+        class="qtrwidth rows wrap" method="post">
+
+        <p class="fullwidth static">The application, @Model.Application, has asked for the following permissions on your account.</p>
+        <ul class="fullwidth static">
+            @foreach (var scope in Model.Scopes) {
+                <li>@scope</li>
+            }
+        </ul>
+
+        <button class="button single spacing horizontal bg-dark fg-light" formaction="@Url.Action("Allow")" type="submit">Allow</button>
+        <button class="button single spacing horizontal bg-secondary fg-light" formaction="@Url.Action("Deny")" type="submit">Deny</button>
+        
+        @foreach (var parameter in Model.Parameters) {
+            <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
+        }
+    </form>
+</div>

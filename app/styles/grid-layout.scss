@@ -7,12 +7,39 @@
 .columns {
     display: flex;
     flex-direction: column;
+
+    padding: 5px;
 }
-.columns > * + * {
-    margin-top: 5px;
+.columns.wrap {
+    flex-wrap: wrap;
+}
+
+.columns > * {
+    margin: 5px;
+}
+.columns > .single {
+    flex-grow: 1;
+}
+.columns > .static {
+    flex-shrink: 0;
 }
 
 .rows {
     display: flex;
     flex-direction: row;
+
+    padding: 5px;
+}
+.rows.wrap {
+    flex-wrap: wrap;
+}
+
+.rows > * {
+    margin: 5px;
+}
+.rows > .single {
+    flex-grow: 1;
+}
+.rows > .static {
+    flex-shrink: 0;
 }

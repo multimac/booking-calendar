@@ -8,6 +8,9 @@ namespace Booking.Website.Models
     [Validator(typeof(AuthorizeModelValidator))]
     public class AuthorizeModel : IModel
     {
+        public string Application { get; set; }
+        public IList<string> Scopes { get; set; }
+
         public IDictionary<string, string> Parameters { get; set; }
 
         public void Normalize() { }

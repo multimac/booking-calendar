@@ -11,6 +11,7 @@ using AspNet.Security.OpenIdConnect.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
 using Booking.Website.Models;
+using System.Linq;
 
 namespace Booking.Website.Controllers
 {
@@ -32,7 +33,13 @@ namespace Booking.Website.Controllers
         public IActionResult Authorize()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
-            var model = new AuthorizeModel { Parameters = request.Parameters };
+            var model = new AuthorizeModel
+            {
+                Application = "",
+                Scopes = request.GetScopes().ToList(),
+                
+                Parameters = request.Parameters
+            };
 
             return View(model);
         }
