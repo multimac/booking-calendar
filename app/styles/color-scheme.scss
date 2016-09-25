@@ -3,3 +3,38 @@ $primary-color:     #40798C;
 $secondary-color:   #70A9A1;
 $tertiary-color:    #9EC1A3;
 $light-color:       #CFE0C3;
+
+.bg-dark {
+    background-color: $dark-color;
+}
+.fg-dark {
+    color: $dark-color;
+}
+
+.bg-primary {
+    background-color: $primary-color;
+}
+.fg-primary {
+    color: $primary-color;
+}
+
+.bg-secondary {
+    background-color: $secondary-color;
+}
+.fg-secondary {
+    color: $secondary-color;
+}
+
+.bg-tertiary {
+    background-color: $tertiary-color;
+}
+.fg-tertiary {
+    color: $tertiary-color;
+}
+
+.bg-light {
+    background-color: $light-color;
+}
+.fg-light {
+    color: $light-color;
+}

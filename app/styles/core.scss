@@ -1,0 +1,45 @@
+.block {
+    display: block;
+}
+.block.children > * {
+    display: block;
+}
+
+.fullheight {
+    height: 100%;
+}
+.fullwidth {
+    width: 100%;
+}
+.fullsize {
+    @extend .fullheight, .fullwidth;
+}
+
+.halfheight {
+    height: 50%;
+}
+.halfwidth {
+    width: 50%;
+}
+.halfsize {
+    @extend .halfheight, .halfwidth;
+}
+
+.quarterheight {
+    height: 25%
+}
+.quarterwidth {
+    width: 25%
+}
+.quartersize {
+    @extend .quartersize, .quarterwidth;
+}
+
+.padding.height {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.padding.width {
+    padding-left: 5px;
+    padding-right: 5px;
+}

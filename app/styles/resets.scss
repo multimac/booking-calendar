@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+}
+
+body, input {
+    box-sizing: border-box;
+
+    font-family: "Montserrat", sans-serif;
+}
+
+input {
+    border: 1px solid #222428;
+    border-radius: 0.28571429em;
+
+    line-height: 1.2142em;
+
+    padding: 0.67861429em 1em;
+}
+.button {
+    border: none;
+    border-radius: 0.28571429em;
+
+    padding: 0.78571429em 1.5em;
+}
