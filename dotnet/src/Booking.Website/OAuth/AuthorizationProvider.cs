@@ -45,6 +45,8 @@ namespace Booking.Website.OAuth
                     error: OpenIdConnectConstants.Errors.UnsupportedResponseType,
                     description: InvalidResponseMessage
                 );
+
+                return Task.CompletedTask;
             }
 
             context.Validate();
@@ -60,6 +62,8 @@ namespace Booking.Website.OAuth
                     error: OpenIdConnectConstants.Errors.UnsupportedGrantType,
                     description: InvalidGrantMessage
                 );
+
+                return Task.CompletedTask;
             }
 
             context.Skip();
