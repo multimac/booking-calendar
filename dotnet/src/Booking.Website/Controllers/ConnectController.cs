@@ -1,17 +1,17 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
+using AspNet.Security.OpenIdConnect.Extensions;
+using AspNet.Security.OpenIdConnect.Server;
+using Booking.Website.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using AspNet.Security.OpenIdConnect.Server;
-using Microsoft.AspNetCore.Builder;
-using System.Security.Claims;
-using AspNet.Security.OpenIdConnect.Extensions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Authentication;
-using Booking.Website.Models;
-using System.Linq;
 
 namespace Booking.Website.Controllers
 {
