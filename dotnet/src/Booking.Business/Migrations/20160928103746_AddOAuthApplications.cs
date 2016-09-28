@@ -13,10 +13,11 @@ namespace Booking.Business.Migrations
                 schema: "booking",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false)
-                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
-                    Name = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
+                    RedirectAllowSubdomains = table.Column<bool>(nullable: false),
+                    RedirectAllowSubpaths = table.Column<bool>(nullable: false),
                     RedirectUrl = table.Column<string>(nullable: false),
+                    Salt = table.Column<string>(nullable: true),
                     Secret = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false)
                 },

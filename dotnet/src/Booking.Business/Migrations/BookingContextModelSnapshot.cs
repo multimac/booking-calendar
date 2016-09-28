@@ -19,19 +19,20 @@ namespace Booking.Business.Migrations
 
             modelBuilder.Entity("Booking.Business.Models.OAuth.Application", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<bool>("RedirectAllowSubdomains");
+
+                    b.Property<bool>("RedirectAllowSubpaths");
 
                     b.Property<string>("RedirectUrl")
                         .IsRequired();
 
+                    b.Property<string>("Salt");
+
                     b.Property<string>("Secret");
 
-                    b.Property<int?>("Type")
-                        .IsRequired();
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

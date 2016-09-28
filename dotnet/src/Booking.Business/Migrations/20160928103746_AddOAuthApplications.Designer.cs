@@ -8,7 +8,7 @@ using Booking.Business;
 namespace Booking.Business.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20160925073221_AddOAuthApplications")]
+    [Migration("20160928103746_AddOAuthApplications")]
     partial class AddOAuthApplications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,19 +20,20 @@ namespace Booking.Business.Migrations
 
             modelBuilder.Entity("Booking.Business.Models.OAuth.Application", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<bool>("RedirectAllowSubdomains");
+
+                    b.Property<bool>("RedirectAllowSubpaths");
 
                     b.Property<string>("RedirectUrl")
                         .IsRequired();
 
+                    b.Property<string>("Salt");
+
                     b.Property<string>("Secret");
 
-                    b.Property<int?>("Type")
-                        .IsRequired();
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 

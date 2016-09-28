@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Booking.Data.Mapping;
 using Booking.Data.Seeding;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,13 +9,15 @@ namespace Booking.Business.Models.OAuth
 {
     public class Application
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
+        public ApplicationType Type { get; set; }
 
-        public string Name { get; set; }
-        public ApplicationType? Type { get; set; }
-
+        public bool RedirectAllowSubdomains { get; set; }
+        public bool RedirectAllowSubpaths { get; set; }
         public string RedirectUrl { get; set; }
+
         public string Secret { get; set; }
+        public string Salt { get; set; }
     }
 
     public class ApplicationMapping : EntityMappingConfiguration<Application>
@@ -25,24 +26,28 @@ namespace Booking.Business.Models.OAuth
         {
             builder.ToTable("OAuth.Applications");
 
-            builder.Property(p => p.Id).ValueGeneratedOnAdd();
-
-            builder.Property(p => p.Name).IsRequired();
+            builder.Property(p => p.Id).IsRequired();
             builder.Property(p => p.Type).IsRequired();
+
+            builder.Property(p => p.RedirectAllowSubdomains).IsRequired();
+            builder.Property(p => p.RedirectAllowSubpaths).IsRequired();
             builder.Property(p => p.RedirectUrl).IsRequired();
         }
     }
 
     public class ApplicationSeeder : EntitySeeder<Application, BookingContext>
     {
-        public override async Task Seed(DbSet<Application> dbSet, BookingContext context, IServiceProvider services)
+        public override async Task Seed(DbSet<Application> applications, BookingContext context, IServiceProvider services)
         {
-            dbSet.Add(new Application
+            if (await applications.AnyAsync((app) => app.Id == "calend.ar"))
+                return;
+
+            applications.Add(new Application
             {
-                Name = "Calend.ar",
+                Id = "calend.ar",
                 Type = ApplicationType.Public,
 
-                RedirectUrl = "http://*.calend.ar/auth",
+                RedirectUrl = "calend.ar/auth",
                 Secret = null
             });
 
