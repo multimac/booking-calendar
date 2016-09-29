@@ -7,6 +7,7 @@ using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
 using Booking.Business.Models.OAuth;
+using Booking.Common.Mvc.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -29,10 +30,12 @@ namespace Booking.Website.OAuth
             = new string[] { "/allow", "/deny" };
 
         private BookingContext DbContext { get; } = null;
+        private IPasswordHasher PasswordHasher { get; } = null;
 
-        public AuthorizationProvider(BookingContext dbContext)
+        public AuthorizationProvider(BookingContext dbContext, IPasswordHasher passwordHasher)
         {
             DbContext = dbContext;
+            PasswordHasher = passwordHasher;
         }
 
         private bool MatchRedirectUrl(Application application, string url)
@@ -44,7 +47,7 @@ namespace Booking.Website.OAuth
             // Only allow "https", or "http" if specifically allowed
             if (uri.Scheme != "https")
             {
-                if(uri.Scheme != "http" && application.RedirectAllowHttp)
+                if (uri.Scheme != "http" && application.RedirectAllowHttp)
                     return false;
             }
 
@@ -178,7 +181,7 @@ namespace Booking.Website.OAuth
                 return;
             }
 
-            if (!string.Equals(context.ClientSecret, application.Secret, StringComparison.Ordinal))
+            if (!PasswordHasher.VerifyHashedPassword(application.Secret, context.ClientSecret))
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.InvalidClient,
