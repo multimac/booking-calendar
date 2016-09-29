@@ -30,7 +30,7 @@ namespace Booking.Common.Mvc.Identity
         }
         public PasswordVerificationResult VerifyHashedPassword(IdentityUser<Guid> user, string hashedPassword, string providedPassword)
         {
-            if(VerifyHashedPassword(hashedPassword, providedPassword))
+            if (!VerifyHashedPassword(hashedPassword, providedPassword))
                 return PasswordVerificationResult.Failed;
 
             return PasswordVerificationResult.Success;
