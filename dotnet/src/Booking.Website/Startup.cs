@@ -6,12 +6,14 @@ using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
 using Booking.Common.Mvc.Filters;
 using Booking.Common.Mvc.General;
+using Booking.Common.Mvc.Identity;
 using Booking.Common.Mvc.Localization;
 using Booking.Common.Mvc.Options;
 using Booking.Website.OAuth;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -124,6 +126,9 @@ namespace Booking.Website
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             // Set up custom dependencies for injection
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
+            
             services.AddScoped<ErrorResponseFactory>();
             
             services.AddSingleton<IOpenIdConnectServerProvider, AuthorizationProvider>();

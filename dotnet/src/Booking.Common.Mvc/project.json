@@ -8,9 +8,13 @@
     "Booking.Common": { "target": "project" },
 
     "Microsoft.AspNetCore.Hosting": "1.0.0-*",
+    "Microsoft.AspNetCore.Identity": "1.0.0-*",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0-*",
 
-    "Microsoft.Extensions.Logging": "1.0.0-*"
+    "Microsoft.Extensions.Logging": "1.0.0-*",
+
+    "Bcrypt.Net-Core": "1.1.0"
   },
   "frameworks": {
     "netcoreapp1.0": {
