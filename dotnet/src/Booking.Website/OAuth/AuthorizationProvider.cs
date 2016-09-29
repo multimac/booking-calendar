@@ -37,6 +37,21 @@ namespace Booking.Website.OAuth
 
         private bool MatchRedirectUrl(Application application, string url)
         {
+            Uri uri;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out uri))
+                return false;
+
+            // Only allow "https", or "http" if specifically allowed
+            if (uri.Scheme != "https")
+            {
+                if(uri.Scheme != "http" && application.RedirectAllowHttp)
+                    return false;
+            }
+
+            var cleanedUrl = uri.GetComponents(
+                UriComponents.HttpRequestUrl & ~UriComponents.Scheme, UriFormat.Unescaped
+            );
+
             var escapedTemplate = Regex.Escape(application.RedirectUrl);
 
             var subdomain = (application.RedirectAllowSubdomains ? @".*\." : string.Empty);
@@ -44,7 +59,7 @@ namespace Booking.Website.OAuth
 
             var template = new Regex($"^{subdomain}{escapedTemplate}{subpath}$");
 
-            return template.IsMatch(url);
+            return template.IsMatch(cleanedUrl);
         }
 
         public override Task MatchEndpoint(MatchEndpointContext context)
@@ -163,7 +178,7 @@ namespace Booking.Website.OAuth
                 return;
             }
 
-            if(!string.Equals(context.ClientSecret, application.Secret, StringComparison.Ordinal))
+            if (!string.Equals(context.ClientSecret, application.Secret, StringComparison.Ordinal))
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.InvalidClient,

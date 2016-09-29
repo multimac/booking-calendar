@@ -14,6 +14,7 @@ namespace Booking.Business.Models.OAuth
 
         public bool RedirectAllowSubdomains { get; set; }
         public bool RedirectAllowSubpaths { get; set; }
+        public bool RedirectAllowHttp { get; set; }
         public string RedirectUrl { get; set; }
 
         public string Secret { get; set; }
@@ -31,25 +32,28 @@ namespace Booking.Business.Models.OAuth
 
             builder.Property(p => p.RedirectAllowSubdomains).IsRequired();
             builder.Property(p => p.RedirectAllowSubpaths).IsRequired();
+            builder.Property(p => p.RedirectAllowHttp).IsRequired();
             builder.Property(p => p.RedirectUrl).IsRequired();
         }
     }
 
     public class ApplicationSeeder : EntitySeeder<Application, BookingContext>
     {
+        private static readonly Application[] Applications = new Application[]
+        {
+            new Application { Id = "calend.ar", Type = ApplicationType.Public, RedirectUrl = "calend.ar/auth" },
+            new Application { Id = "postman", Type = ApplicationType.Public, RedirectUrl = "www.getpostman.com/oauth/callback" }
+        };
+
         public override async Task Seed(DbSet<Application> applications, BookingContext context, IServiceProvider services)
         {
-            if (await applications.AnyAsync((app) => app.Id == "calend.ar"))
-                return;
-
-            applications.Add(new Application
+            foreach (var seedApp in Applications)
             {
-                Id = "calend.ar",
-                Type = ApplicationType.Public,
+                if (await applications.AnyAsync((app) => app.Id == seedApp.Id))
+                    continue;
 
-                RedirectUrl = "calend.ar/auth",
-                Secret = null
-            });
+                applications.Add(seedApp);
+            }
 
             await context.SaveChangesAsync();
         }

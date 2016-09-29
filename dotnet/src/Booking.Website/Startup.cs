@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
 using Booking.Common.Mvc.Filters;
 using Booking.Common.Mvc.General;
@@ -124,6 +125,8 @@ namespace Booking.Website
 
             // Set up custom dependencies for injection
             services.AddScoped<ErrorResponseFactory>();
+            
+            services.AddSingleton<IOpenIdConnectServerProvider, AuthorizationProvider>();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory logger)
@@ -148,7 +151,8 @@ namespace Booking.Website
 
             app.UseOpenIdConnectServer(options =>
             {
-                options.Provider = new AuthorizationProvider();
+                options.Provider = app.ApplicationServices
+                    .GetRequiredService<IOpenIdConnectServerProvider>();
 
                 options.AuthorizationEndpointPath = "/connect/authorize";
                 options.TokenEndpointPath = "/connect/token";
