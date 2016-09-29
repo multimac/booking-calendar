@@ -60,11 +60,7 @@ namespace Booking.Data.Seeding
             if(typedContext == null)
                 throw new ArgumentException($"The given {nameof(DbContext)} is not {typeof(U).Name}", nameof(context));
 
-            var dbSet = typedContext.Set<T>();
-            if(await dbSet.AnyAsync())
-                return; 
-
-            await seed(dbSet, typedContext);
+            await seed(typedContext.Set<T>(), typedContext);
         }
     }
 }
