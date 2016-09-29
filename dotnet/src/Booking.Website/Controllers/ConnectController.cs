@@ -1,16 +1,16 @@
-using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Server;
+using Booking.Business;
 using Booking.Website.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Booking.Website.Controllers
@@ -19,25 +19,29 @@ namespace Booking.Website.Controllers
     public class ConnectController : Controller
     {
         private ILogger<ConnectController> Logger { get; } = null;
-        private UserManager<IdentityUser<Guid>> UserManager { get; } = null;
 
-        public ConnectController(
-            ILogger<ConnectController> logger,
-            UserManager<IdentityUser<Guid>> userManager)
+        private BookingContext BookingContext { get; } = null;
+
+        public ConnectController(ILogger<ConnectController> logger, BookingContext bookingContext)
         {
             this.Logger = logger;
-            this.UserManager = userManager;
+            
+            this.BookingContext = bookingContext;
         }
 
         [Authorize, HttpGet("authorize")]
-        public IActionResult Authorize()
+        public async Task<IActionResult> Authorize()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
+
+            var application = await BookingContext.Applications
+                .SingleAsync((app) => app.Id == request.ClientId);
+
             var model = new AuthorizeModel
             {
-                Application = "",
+                Application = application.Id,
                 Scopes = request.GetScopes().ToList(),
-                
+
                 Parameters = request.Parameters
             };
 
