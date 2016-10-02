@@ -1,17 +1,25 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Booking.Common.Mvc.Identity
 {
     public class PasswordHasher : IPasswordHasher, IPasswordHasher<IdentityUser<Guid>>
     {
+        public Options.PasswordHasherOptions Options { get; set; } = null;
+
+        public PasswordHasher(IOptions<Options.PasswordHasherOptions> optionsAccessor)
+        {
+            this.Options = optionsAccessor.Value;
+        }
+
         public string HashPassword(string password)
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password));
 
-            return BCrypt.Net.BCrypt.HashPassword(password, 12);
+            return BCrypt.Net.BCrypt.HashPassword(password, Options.WorkFactor);
         }
         public string HashPassword(IdentityUser<Guid> user, string password)
         {

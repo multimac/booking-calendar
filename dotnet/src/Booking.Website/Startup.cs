@@ -128,9 +128,13 @@ namespace Booking.Website
             // Set up custom dependencies for injection
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
-            
+
+            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
+                Configuration.GetSection("Identity:Hasher").Bind(options)
+            );
+
             services.AddScoped<ErrorResponseFactory>();
-            
+
             services.AddSingleton<IOpenIdConnectServerProvider, AuthorizationProvider>();
         }
 
