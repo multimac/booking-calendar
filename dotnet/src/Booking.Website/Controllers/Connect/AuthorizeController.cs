@@ -15,21 +15,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Booking.Website.Controllers
 {
-    [Route("[controller]")]
-    public class ConnectController : Controller
+    [Route("connect/[controller]")]
+    public class AuthorizeController : Controller
     {
-        private ILogger<ConnectController> Logger { get; } = null;
+        private ILogger<AuthorizeController> Logger { get; } = null;
 
         private BookingContext BookingContext { get; } = null;
 
-        public ConnectController(ILogger<ConnectController> logger, BookingContext bookingContext)
+        public AuthorizeController(ILogger<AuthorizeController> logger, BookingContext bookingContext)
         {
             this.Logger = logger;
             
             this.BookingContext = bookingContext;
         }
 
-        [Authorize, HttpGet("authorize")]
+        [Authorize, HttpGet]
         public async Task<IActionResult> Authorize()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
@@ -48,7 +48,7 @@ namespace Booking.Website.Controllers
             return View(model);
         }
 
-        [Authorize, ValidateAntiForgeryToken, HttpPost("authorize/allow")]
+        [Authorize, ValidateAntiForgeryToken, HttpPost("allow")]
         public IActionResult Allow()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
@@ -71,7 +71,7 @@ namespace Booking.Website.Controllers
             return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
 
-        [Authorize, ValidateAntiForgeryToken, HttpPost("authorize/deny")]
+        [Authorize, ValidateAntiForgeryToken, HttpPost("deny")]
         public IActionResult Deny()
         {
             return Forbid(OpenIdConnectServerDefaults.AuthenticationScheme);

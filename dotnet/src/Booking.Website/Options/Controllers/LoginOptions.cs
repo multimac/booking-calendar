@@ -1,6 +1,6 @@
 namespace Booking.Website.Options.Controllers
 {
-    public class AccountOptions
+    public class LoginOptions
     {
         public bool LockoutOnFailedLogin { get; set; } = false;
     }

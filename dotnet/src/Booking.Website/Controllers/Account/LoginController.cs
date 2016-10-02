@@ -15,23 +15,23 @@ using System.Linq;
 
 namespace Booking.Website.Controllers
 {
-    [Route("[controller]")]
-    public class AccountController : Controller
+    [Route("account/[controller]")]
+    public class LoginController : Controller
     {
         private static readonly string ReturnUrlParam = "ReturnUrl";
 
         private ErrorResponseFactory ErrorResponseFactory { get; } = null;
-        private AccountOptions Options { get; } = null;
+        private LoginOptions Options { get; } = null;
 
-        private ILogger<AccountController> Logger { get; } = null;
+        private ILogger<LoginController> Logger { get; } = null;
 
         private SignInManager<IdentityUser<Guid>> SignInManager { get; } = null;
         private UserManager<IdentityUser<Guid>> UserManager { get; } = null;
 
-        public AccountController(
+        public LoginController(
             ErrorResponseFactory errorResponseFactory,
-            IOptions<AccountOptions> optionsAccessor,
-            ILogger<AccountController> logger,
+            IOptions<LoginOptions> optionsAccessor,
+            ILogger<LoginController> logger,
             SignInManager<IdentityUser<Guid>> signInManager,
             UserManager<IdentityUser<Guid>> userManager)
         {
@@ -44,7 +44,7 @@ namespace Booking.Website.Controllers
             this.UserManager = userManager;
         }
 
-        [HttpGet("login")]
+        [HttpGet]
         public IActionResult Login([FromQuery]string returnUrl = null)
         {
             ViewData[ReturnUrlParam] = returnUrl;
@@ -55,7 +55,7 @@ namespace Booking.Website.Controllers
             return View();
         }
 
-        [ValidateAntiForgeryToken, HttpPost("login")]
+        [ValidateAntiForgeryToken, HttpPost]
         public async Task<IActionResult> Login([FromForm]LoginModel model, [FromQuery]string returnUrl = null)
         {
             ViewData[ReturnUrlParam] = returnUrl;

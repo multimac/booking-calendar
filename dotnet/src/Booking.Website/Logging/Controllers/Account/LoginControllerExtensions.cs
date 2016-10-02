@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Booking.Website.Logging.Controllers
 {
-    public static class AccountControllerExtensions
+    public static class LoginControllerExtensions
     {
         private static Action<ILogger, string, Exception> loginAttempted = null;
         private static Action<ILogger, string, Exception> loginSuccessful = null;
         
-        static AccountControllerExtensions()
+        static LoginControllerExtensions()
         {
             loginAttempted = LoggerMessage.Define<string>(
                 logLevel: LogLevel.Information, eventId: 1,
@@ -22,11 +22,11 @@ namespace Booking.Website.Logging.Controllers
             );
         }
         
-        public static void LoginAttempted(this ILogger<AccountController> logger, string user)
+        public static void LoginAttempted(this ILogger<LoginController> logger, string user)
         {
             loginAttempted(logger, user, null);
         }
-        public static void LoginSuccessful(this ILogger<AccountController> logger, string user)
+        public static void LoginSuccessful(this ILogger<LoginController> logger, string user)
         {
             loginSuccessful(logger, user, null);
         }
