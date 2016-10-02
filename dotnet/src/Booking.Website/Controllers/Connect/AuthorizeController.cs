@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Website.Controllers
+namespace Booking.Website.Controllers.Connect
 {
     [Route("connect/[controller]")]
     public class AuthorizeController : Controller

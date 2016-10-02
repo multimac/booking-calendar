@@ -1,8 +1,8 @@
 using System;
-using Booking.Website.Controllers;
+using Booking.Website.Controllers.Account;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Website.Logging.Controllers
+namespace Booking.Website.Logging.Controllers.Account
 {
     public static class LoginControllerExtensions
     {

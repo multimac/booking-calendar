@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Booking.Website.Logging.Controllers;
+using Booking.Website.Logging.Controllers.Account;
 using Booking.Website.Models;
 using Booking.Website.Options.Controllers;
 using Booking.Common.Mvc.General;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 using Booking.Common.Extensions;
 using System.Linq;
 
-namespace Booking.Website.Controllers
+namespace Booking.Website.Controllers.Account
 {
     [Route("account/[controller]")]
     public class LoginController : Controller

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Booking.Website.Controllers
+namespace Booking.Website.Controllers.Account
 {
     [Route("account/[controller]")]
     public class PingController : Controller
