@@ -19,6 +19,7 @@ namespace Booking.Website.Controllers.Account
     public class LoginController : Controller
     {
         private static readonly string ReturnUrlParam = "ReturnUrl";
+        private static readonly string ViewName = "Views/Account/Login.cshtml";
 
         private ErrorResponseFactory ErrorResponseFactory { get; } = null;
         private LoginOptions Options { get; } = null;
@@ -52,7 +53,7 @@ namespace Booking.Website.Controllers.Account
             if(User.Identities.Any(i => i.IsAuthenticated))
                 return Redirect(returnUrl.NullIfWhiteSpace() ?? "/");
 
-            return View();
+            return View(ViewName);
         }
 
         [ValidateAntiForgeryToken, HttpPost]
@@ -75,7 +76,7 @@ namespace Booking.Website.Controllers.Account
             if (user == null)
             {
                 var error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
-                return View();
+                return View(ViewName);
             }
 
             var signInResult = await SignInManager.PasswordSignInAsync(
@@ -91,7 +92,7 @@ namespace Booking.Website.Controllers.Account
                 else
                     error = ErrorResponseFactory.GenerateModel(ErrorCode.FailedLogin);
 
-                return View();
+                return View(ViewName);
             }
 
             Logger.LoginSuccessful(model.Email);
