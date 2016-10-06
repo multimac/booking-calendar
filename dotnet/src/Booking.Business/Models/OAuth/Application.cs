@@ -35,7 +35,6 @@ namespace Booking.Business.Models.OAuth
             builder.Property(p => p.RedirectAllowSubdomains).IsRequired();
             builder.Property(p => p.RedirectAllowSubpaths).IsRequired();
             builder.Property(p => p.RedirectAllowHttp).IsRequired();
-            builder.Property(p => p.RedirectUrl).IsRequired();
         }
     }
 
@@ -43,8 +42,10 @@ namespace Booking.Business.Models.OAuth
     {
         private static readonly Application[] Applications = new Application[]
         {
+            new Application { Id = "postman", Type = ApplicationType.Public, RedirectUrl = "www.getpostman.com/oauth2/callback" },
             new Application { Id = "calend.ar", Type = ApplicationType.Public, RedirectUrl = "calend.ar/auth" },
-            new Application { Id = "postman", Type = ApplicationType.Public, RedirectUrl = "www.getpostman.com/oauth2/callback" }
+            
+            new Application { Id = "api.calend.ar", Type = ApplicationType.Introspection, Secret = "iG3n1l987EK8AUksRa8u2iNb5mu9F5dEsfspXt4e2ZoqFoaJHUDPSIEO/Yt+rYRZ" }
         };
 
         public override async Task Seed(DbSet<Application> applications, BookingContext context, IServiceProvider services)

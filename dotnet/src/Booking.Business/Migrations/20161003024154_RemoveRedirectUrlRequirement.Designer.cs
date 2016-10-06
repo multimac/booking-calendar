@@ -8,9 +8,10 @@ using Booking.Business;
 namespace Booking.Business.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20161003024154_RemoveRedirectUrlRequirement")]
+    partial class RemoveRedirectUrlRequirement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("booking")
