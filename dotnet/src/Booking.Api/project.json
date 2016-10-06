@@ -36,6 +36,8 @@
     
     "Microsoft.Extensions.Options": "1.0.0-*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0-*",
+    
+    "AspNet.Security.OAuth.Introspection": "1.0.0-*",
 
     "FluentValidation": "6.3.3-alpha",
 

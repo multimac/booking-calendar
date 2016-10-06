@@ -5,10 +5,12 @@ using System.Linq;
 using Booking.Business;
 using Booking.Common.Mvc.Filters;
 using Booking.Common.Mvc.General;
+using Booking.Common.Mvc.Identity;
 using Booking.Common.Mvc.Localization;
 using Booking.Common.Mvc.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -68,26 +70,12 @@ namespace Booking.Api
                 options.AdminPassword = Configuration["BOOKING_ADMIN_PASSWORD"];
             });
 
-            // Set up and configure Identity
-            services
-                .AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<BookingContext, Guid>();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequiredLength = 8;
-                options.User.RequireUniqueEmail = true;
-
-                var appCookie = options.Cookies.ApplicationCookie;
-                appCookie.CookieName = Configuration["Identity:CookieName"];
-            });
-
             // Set up and configure Localization
             services.AddSingleton<IStringLocalizerFactory, StringLocalizerFactory>();
             services.Configure<StringLocalizerFactoryOptions>(options =>
                 Configuration.GetSection("Localization:Factory").Bind(options)
             );
-            
+
             services.AddLocalization();
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -114,12 +102,20 @@ namespace Booking.Api
 
             // Set up and configure MVC
             services.AddCors();
+            services.AddAuthentication();
 
             services.AddMvc(
                 options => options.Filters.Add(typeof(GlobalExceptionFilter))
             );
 
             // Set up custom dependencies for injection
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
+
+            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
+                Configuration.GetSection("Identity:Hasher").Bind(options)
+            );
+
             services.AddScoped<ErrorResponseFactory>();
         }
 
@@ -127,23 +123,24 @@ namespace Booking.Api
         {
             logger.AddSerilog();
 
-            // Seed any missing data
-            if (HostingEnvironment.IsDevelopment())
-            {
-                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
-                    context.EnsureSeedData(scope.ServiceProvider).GetAwaiter().GetResult();
-                }
-            }
-
             // Set up pipeline
             if (HostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-            app.UseIdentity();
+            app.UseOAuthIntrospection(options =>
+            {
+                Options.OAuthOptions oAuthOptions = new Options.OAuthOptions();
+                Configuration.GetSection("OAuth").Bind(oAuthOptions);
+
+                options.Audiences.Add("api.calend.ar");
+
+                options.Authority = oAuthOptions.Authority;
+                options.ClientId = oAuthOptions.ClientId;
+
+                options.ClientSecret = Configuration["BOOKING_OAUTH_SECRET"];
+            });
 
             app.UseMvc();
         }
