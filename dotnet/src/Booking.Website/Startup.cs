@@ -163,8 +163,12 @@ namespace Booking.Website
                 options.Provider = app.ApplicationServices
                     .GetRequiredService<IOpenIdConnectServerProvider>();
 
+                options.Issuer = new Uri("http://www.calend.ar/");
+                
                 options.AuthorizationEndpointPath = "/connect/authorize";
                 options.TokenEndpointPath = "/connect/token";
+
+                options.IntrospectionEndpointPath = "/connect/introspection";
                 options.RevocationEndpointPath = "/connect/revoke";
 
                 options.AllowInsecureHttp = true;

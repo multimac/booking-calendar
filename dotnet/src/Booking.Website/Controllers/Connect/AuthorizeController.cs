@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
+using Booking.Business.Models.OAuth;
 using Booking.Website.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,8 @@ namespace Booking.Website.Controllers.Connect
     [Route("connect/[controller]")]
     public class AuthorizeController : Controller
     {
+        private static readonly string ViewName = "Views/Connect/Authorize.cshtml";
+
         private ILogger<AuthorizeController> Logger { get; } = null;
 
         private BookingContext BookingContext { get; } = null;
@@ -37,6 +40,11 @@ namespace Booking.Website.Controllers.Connect
             var application = await BookingContext.Applications
                 .SingleAsync((app) => app.Id == request.ClientId);
 
+            if(application == null || application.Type == ApplicationType.Introspection)
+            {
+                return Forbid(OpenIdConnectServerDefaults.AuthenticationScheme);
+            }
+
             var model = new AuthorizeModel
             {
                 Application = application.Id,
@@ -45,16 +53,25 @@ namespace Booking.Website.Controllers.Connect
                 Parameters = request.Parameters
             };
 
-            return View(model);
+            return View(ViewName, model);
         }
 
         [Authorize, ValidateAntiForgeryToken, HttpPost("allow")]
-        public IActionResult Allow()
+        public async Task<IActionResult> Allow()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
 
+            var application = await BookingContext.Applications
+                .Where(a => a.Id == request.ClientId)
+                .SingleOrDefaultAsync(HttpContext.RequestAborted);
+            
+            if(application == null || application.Type == ApplicationType.Introspection)
+            {
+                return Forbid(OpenIdConnectServerDefaults.AuthenticationScheme);
+            }
+
             var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
-            identity.AddClaim(ClaimTypes.NameIdentifier, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            identity.AddClaim(ClaimTypes.NameIdentifier, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var ticket = new AuthenticationTicket(
                 new ClaimsPrincipal(identity),
@@ -68,6 +85,8 @@ namespace Booking.Website.Controllers.Connect
                 OpenIdConnectConstants.Scopes.Email
             );
 
+            ticket.SetResources("api.calend.ar");
+            
             return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
 

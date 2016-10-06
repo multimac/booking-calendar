@@ -29,12 +29,12 @@ namespace Booking.Website.OAuth
         private static readonly string[] ValidAuthorizeEndpoints
             = new string[] { "/allow", "/deny" };
 
-        private BookingContext DbContext { get; } = null;
+        private BookingContext BookingContext { get; } = null;
         private IPasswordHasher PasswordHasher { get; } = null;
 
-        public AuthorizationProvider(BookingContext dbContext, IPasswordHasher passwordHasher)
+        public AuthorizationProvider(BookingContext bookingContext, IPasswordHasher passwordHasher)
         {
-            DbContext = dbContext;
+            BookingContext = bookingContext;
             PasswordHasher = passwordHasher;
         }
 
@@ -102,11 +102,11 @@ namespace Booking.Website.OAuth
                 return;
             }
 
-            var application = await DbContext.Applications
+            var application = await BookingContext.Applications
                 .Where(a => a.Id == context.ClientId)
                 .SingleOrDefaultAsync(context.HttpContext.RequestAborted);
 
-            if (application == null)
+            if (application == null || application.Type == ApplicationType.Introspection)
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.InvalidClient,
@@ -128,10 +128,48 @@ namespace Booking.Website.OAuth
 
             context.Validate();
         }
+        public override async Task ValidateIntrospectionRequest(ValidateIntrospectionRequestContext context)
+        {
+            if (string.IsNullOrWhiteSpace(context.ClientId))
+            {
+                context.Reject(
+                    error: OpenIdConnectConstants.Errors.InvalidClient,
+                    description: InvalidClientMessage
+                );
+
+                return;
+            }
+
+            var application = await BookingContext.Applications
+                .Where(a => a.Id == context.ClientId)
+                .SingleOrDefaultAsync(context.HttpContext.RequestAborted);
+                
+            if (application == null || application.Type != ApplicationType.Introspection)
+            {
+                context.Reject(
+                    error: OpenIdConnectConstants.Errors.InvalidClient,
+                    description: InvalidClientMessage
+                );
+
+                return;
+            }
+
+            if (!PasswordHasher.VerifyHashedPassword(application.Secret, context.ClientSecret))
+            {
+                context.Reject(
+                    error: OpenIdConnectConstants.Errors.InvalidClient,
+                    description: InvalidClientMessage
+                );
+
+                return;
+            }
+
+            context.Validate();
+        }
         public override async Task ValidateTokenRequest(ValidateTokenRequestContext context)
         {
             var request = context.Request;
-            if (!request.IsAuthorizationCodeGrantType() || request.IsRefreshTokenGrantType())
+            if (!request.IsAuthorizationCodeGrantType() && !request.IsRefreshTokenGrantType())
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.UnsupportedGrantType,
@@ -151,11 +189,11 @@ namespace Booking.Website.OAuth
                 return;
             }
 
-            var application = await DbContext.Applications
+            var application = await BookingContext.Applications
                 .Where(a => a.Id == context.ClientId)
                 .SingleOrDefaultAsync(context.HttpContext.RequestAborted);
 
-            if (application == null)
+            if (application == null || application.Type == ApplicationType.Introspection)
             {
                 context.Reject(
                     error: OpenIdConnectConstants.Errors.InvalidClient,
@@ -192,79 +230,6 @@ namespace Booking.Website.OAuth
             }
 
             context.Validate();
-        }
-
-        public override async Task HandleTokenRequest(HandleTokenRequestContext context)
-        {
-            var serviceProvider = context.HttpContext.RequestServices;
-            var manager = serviceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
-
-            if (!context.Request.IsPasswordGrantType())
-                return;
-
-            var user = await manager.FindByEmailAsync(context.Request.Username);
-            if (user == null)
-            {
-                context.Reject(
-                    error: OpenIdConnectConstants.Errors.InvalidGrant,
-                    description: "Invalid credentials."
-                );
-
-                return;
-            }
-
-            if (manager.SupportsUserLockout && await manager.IsLockedOutAsync(user))
-            {
-                context.Reject(
-                    error: OpenIdConnectConstants.Errors.InvalidGrant,
-                    description: "Invalid credentials."
-                );
-
-                return;
-            }
-
-            if (!await manager.CheckPasswordAsync(user, context.Request.Password))
-            {
-                if (manager.SupportsUserLockout)
-                    await manager.AccessFailedAsync(user);
-
-                context.Reject(
-                    error: OpenIdConnectConstants.Errors.InvalidGrant,
-                    description: "Invalid credentials."
-                );
-
-                return;
-            }
-
-            if (manager.SupportsUserLockout)
-                await manager.ResetAccessFailedCountAsync(user);
-
-            if (manager.SupportsUserTwoFactor && await manager.GetTwoFactorEnabledAsync(user))
-            {
-                context.Reject(
-                    error: OpenIdConnectConstants.Errors.InvalidGrant,
-                    description: "Two-factor authentication is required for this account."
-                );
-
-                return;
-            }
-
-            var identity = new ClaimsIdentity(context.Options.AuthenticationScheme);
-            identity.AddClaim(ClaimTypes.NameIdentifier, await manager.GetUserIdAsync(user));
-
-            var ticket = new AuthenticationTicket(
-                new ClaimsPrincipal(identity),
-                new AuthenticationProperties(),
-                context.Options.AuthenticationScheme
-            );
-
-            ticket.SetScopes(
-                OpenIdConnectConstants.Scopes.OfflineAccess
-            );
-
-            ticket.SetResources("api.calend.ar");
-
-            context.Validate(ticket);
         }
     }
 }
