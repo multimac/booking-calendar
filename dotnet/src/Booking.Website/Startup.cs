@@ -66,12 +66,6 @@ namespace Booking.Website
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );
 
-            services.Configure<Business.Options.IdentityOptions>(options =>
-            {
-                options.AdminEmail = Configuration["BOOKING_ADMIN_EMAIL"];
-                options.AdminPassword = Configuration["BOOKING_ADMIN_PASSWORD"];
-            });
-
             // Set up and configure Identity
             services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BookingContext, Guid>();
@@ -141,16 +135,6 @@ namespace Booking.Website
         public void Configure(IApplicationBuilder app, ILoggerFactory logger)
         {
             logger.AddSerilog();
-
-            // Seed any missing data
-            if (HostingEnvironment.IsDevelopment())
-            {
-                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
-                    context.EnsureSeedData(scope.ServiceProvider).GetAwaiter().GetResult();
-                }
-            }
 
             // Set up pipeline
             if (HostingEnvironment.IsDevelopment())
