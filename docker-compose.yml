@@ -20,6 +20,14 @@ services:
       BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     image: booking-database
+  seed:
+    build:
+      context: ./dotnet/
+      dockerfile: Booking.Seeder.Dockerfile
+    environment:
+      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
+      BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
+    image: booking-seed
   site:
     build:
       context: ./dotnet/
