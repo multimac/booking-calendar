@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Booking.Business.Options;
 using Booking.Common.Mvc.Identity;
 using Booking.Data.Mapping;
 using Booking.Data.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Booking.Business.Models.OAuth
 {
@@ -40,19 +42,14 @@ namespace Booking.Business.Models.OAuth
 
     public class ApplicationSeeder : EntitySeeder<Application, BookingContext>
     {
-        private static readonly Application[] Applications = new Application[]
-        {
-            new Application { Id = "postman", Type = ApplicationType.Public, RedirectUrl = "www.getpostman.com/oauth2/callback" },
-            new Application { Id = "calend.ar", Type = ApplicationType.Public, RedirectUrl = "calend.ar/auth" },
-            
-            new Application { Id = "api.calend.ar", Type = ApplicationType.Introspection, Secret = "iG3n1l987EK8AUksRa8u2iNb5mu9F5dEsfspXt4e2ZoqFoaJHUDPSIEO/Yt+rYRZ" }
-        };
-
         public override async Task Seed(DbSet<Application> applications, BookingContext context, IServiceProvider services)
         {
             var passwordHasher = services.GetRequiredService<IPasswordHasher>();
 
-            foreach (var seedApp in Applications)
+            var optionsAccessor = services.GetRequiredService<IOptions<OAuthOptions>>();
+            var options = optionsAccessor.Value;
+
+            foreach (var seedApp in options.Applications)
             {
                 if (await applications.AnyAsync((app) => app.Id == seedApp.Id))
                     continue;

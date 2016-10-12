@@ -62,16 +62,19 @@ namespace Booking.Seeder
             services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BookingContext, Guid>();
                 
+            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
+                Configuration.GetSection("Identity:Hasher").Bind(options)
+            );
+
             services.Configure<Business.Options.IdentityOptions>(options =>
                 Configuration.GetSection("Identity").Bind(options)
+            );
+            services.Configure<Business.Options.OAuthOptions>(options =>
+                Configuration.GetSection("OAuth").Bind(options)
             );
             
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
-
-            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
-                Configuration.GetSection("Identity:Hasher").Bind(options)
-            );
 
             Services = services.BuildServiceProvider();
         }
