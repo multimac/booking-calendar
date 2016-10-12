@@ -22,7 +22,6 @@ namespace Booking.Business.Models.OAuth
         public string RedirectUrl { get; set; }
 
         public string Secret { get; set; }
-        public string Salt { get; set; }
     }
 
     public class ApplicationMapping : EntityMappingConfiguration<Application>

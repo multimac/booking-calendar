@@ -8,9 +8,10 @@ using Booking.Business;
 namespace Booking.Business.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20161012083400_RemoveApplicationSalt")]
+    partial class RemoveApplicationSalt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("booking")
