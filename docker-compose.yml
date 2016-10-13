@@ -5,7 +5,6 @@ services:
       context: ./dotnet/
       dockerfile: Booking.Api.Dockerfile
     environment:
-      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
       BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
       BOOKING_OAUTH_SECRET: "${BOOKING_OAUTH_SECRET}"
     links:
@@ -27,7 +26,6 @@ services:
     depends_on:
       - db
     environment:
-      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
       BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
     image: booking-seed
   site:
@@ -35,7 +33,6 @@ services:
       context: ./dotnet/
       dockerfile: Booking.Website.Dockerfile
     environment:
-      BOOKING_CONNECTIONSTRING: "${BOOKING_CONNECTIONSTRING}"
       BOOKING_PASSWORD: "${BOOKING_PASSWORD}"
     links:
       - db:booking-database

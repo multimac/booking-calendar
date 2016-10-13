@@ -55,13 +55,14 @@ namespace Booking.Website
         public void ConfigureServices(IServiceCollection services)
         {
             // Set up and configure Entity Framework
-            NpgsqlConnectionStringBuilder connStringBuilder = new NpgsqlConnectionStringBuilder(
-                Configuration["BOOKING_CONNECTIONSTRING"]
+            var connStringBuilder = new NpgsqlConnectionStringBuilder(
+                Configuration.GetConnectionString("Booking")
             );
 
             connStringBuilder.Password = Configuration["BOOKING_PASSWORD"];
 
-            services.AddEntityFrameworkNpgsql()
+            services
+                .AddEntityFrameworkNpgsql()
                 .AddDbContext<BookingContext>(
                     options => options.UseNpgsql(connStringBuilder.ConnectionString)
                 );

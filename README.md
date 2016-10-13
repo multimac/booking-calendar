@@ -8,11 +8,7 @@
 
 ### Possible variables:
 ```
-BOOKING_CONNECTIONSTRING (api/db) - The connection string from the 'api' container to the 'db' container, excluding password
 BOOKING_PASSWORD (api/db) - Password for the API to use when connecting to the database
-
-BOOKING_ADMIN_EMAIL (api) - Email address for the admin account in the API (exclude to not create admin account)
-BOOKING_ADMIN_PASSWORD (api) - Password for the admin account in the API (exclude to prevent admin account from logging in)
 
 BOOKING_OAUTH_SECRET (api) - Secret for the API to use when authenticating to the OAuth server
 

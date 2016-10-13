@@ -49,8 +49,9 @@ namespace Booking.Seeder
         {
             var services = new ServiceCollection();
 
-            NpgsqlConnectionStringBuilder connStringBuilder =
-                new NpgsqlConnectionStringBuilder(Configuration["BOOKING_CONNECTIONSTRING"]);
+            var connStringBuilder = new NpgsqlConnectionStringBuilder(
+                Configuration.GetConnectionString("Booking")
+            );
 
             connStringBuilder.Password = Configuration["BOOKING_PASSWORD"];
 
@@ -62,10 +63,7 @@ namespace Booking.Seeder
             services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BookingContext, Guid>();
 
-            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
-                Configuration.GetSection("Identity:Hasher").Bind(options)
-            );
-
+            // Set up seeding options
             services.Configure<Business.Options.IdentityOptions>(options =>
                 Configuration.GetSection("Identity").Bind(options)
             );
@@ -73,8 +71,13 @@ namespace Booking.Seeder
                 Configuration.GetSection("OAuth").Bind(options)
             );
 
+            // Set up custom dependencies for injection
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
+
+            services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
+                Configuration.GetSection("Identity:Hasher").Bind(options)
+            );
 
             Services = services.BuildServiceProvider();
         }
