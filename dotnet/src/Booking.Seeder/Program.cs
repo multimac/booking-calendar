@@ -38,7 +38,7 @@ namespace Booking.Seeder
 
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            if (environment.ToLower() == "development")
+            if (environment?.ToLower() == "development")
                 builder.AddUserSecrets();
             else
                 builder.AddEnvironmentVariables();
@@ -49,7 +49,7 @@ namespace Booking.Seeder
         {
             var services = new ServiceCollection();
 
-            NpgsqlConnectionStringBuilder connStringBuilder = 
+            NpgsqlConnectionStringBuilder connStringBuilder =
                 new NpgsqlConnectionStringBuilder(Configuration["BOOKING_CONNECTIONSTRING"]);
 
             connStringBuilder.Password = Configuration["BOOKING_PASSWORD"];
@@ -61,7 +61,7 @@ namespace Booking.Seeder
 
             services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BookingContext, Guid>();
-                
+
             services.Configure<Common.Mvc.Options.PasswordHasherOptions>(options =>
                 Configuration.GetSection("Identity:Hasher").Bind(options)
             );
@@ -72,7 +72,7 @@ namespace Booking.Seeder
             services.Configure<Business.Options.OAuthOptions>(options =>
                 Configuration.GetSection("OAuth").Bind(options)
             );
-            
+
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IPasswordHasher<IdentityUser<Guid>>, PasswordHasher>();
 
