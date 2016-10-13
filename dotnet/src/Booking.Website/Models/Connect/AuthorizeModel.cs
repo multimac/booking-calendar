@@ -3,7 +3,7 @@ using Booking.Common.Mvc.Models;
 using FluentValidation;
 using FluentValidation.Attributes;
 
-namespace Booking.Website.Models
+namespace Booking.Website.Models.Connect
 {
     [Validator(typeof(AuthorizeModelValidator))]
     public class AuthorizeModel : IModel

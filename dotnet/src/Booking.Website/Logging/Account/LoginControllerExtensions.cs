@@ -2,7 +2,7 @@ using System;
 using Booking.Website.Controllers.Account;
 using Microsoft.Extensions.Logging;
 
-namespace Booking.Website.Logging.Controllers.Account
+namespace Booking.Website.Logging.Account
 {
     public static class LoginControllerExtensions
     {

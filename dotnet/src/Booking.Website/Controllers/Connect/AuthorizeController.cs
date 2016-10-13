@@ -5,7 +5,7 @@ using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
 using Booking.Business.Models.OAuth;
-using Booking.Website.Models;
+using Booking.Website.Models.Connect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;

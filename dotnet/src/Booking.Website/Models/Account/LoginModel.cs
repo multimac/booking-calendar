@@ -2,7 +2,7 @@ using Booking.Common.Mvc.Models;
 using FluentValidation;
 using FluentValidation.Attributes;
 
-namespace Booking.Website.Models
+namespace Booking.Website.Models.Account
 {
     [Validator(typeof(LoginModelValidator))]
     public class LoginModel : IModel

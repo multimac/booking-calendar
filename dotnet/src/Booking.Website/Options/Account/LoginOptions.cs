@@ -1,4 +1,4 @@
-namespace Booking.Website.Options.Controllers
+namespace Booking.Website.Options.Account
 {
     public class LoginOptions
     {

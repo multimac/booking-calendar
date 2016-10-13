@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Booking.Website.Logging.Controllers.Account;
-using Booking.Website.Models;
-using Booking.Website.Options.Controllers;
+using Booking.Website.Logging.Account;
+using Booking.Website.Models.Account;
+using Booking.Website.Options.Account;
 using Booking.Common.Mvc.General;
 using Booking.Common.Mvc.Models;
 using Microsoft.AspNetCore.Identity;

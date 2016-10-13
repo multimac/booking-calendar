@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
@@ -8,12 +7,7 @@ using AspNet.Security.OpenIdConnect.Server;
 using Booking.Business;
 using Booking.Business.Models.OAuth;
 using Booking.Common.Mvc.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Booking.Website.OAuth
 {
